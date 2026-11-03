@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cuaderno B1 Deutsch: práctica interactiva</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--bg:#fbf8f1;--card:#fff;--ink:#2b2622;--muted:#7a716a;--accent:#f4d35e;--ok:#2e8b57;--okbg:#e7f5ec;--bad:#d64545;--badbg:#fdecec;--line:#e8e1d4;--soft:#f3eee3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding:16px 16px 60px}
+h1{font-family:Fraunces,serif;font-weight:800;font-size:28px;margin:6px 0 2px;line-height:1.15}
+h1 span{background:linear-gradient(transparent 55%,var(--accent) 55%);padding:0 4px}
+h2{font-family:Fraunces,serif;font-size:22px;margin:4px 0 10px}
+h3{font-size:16px;margin:16px 0 8px}
+.sub{color:var(--muted);margin:0 0 14px;font-size:15px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;position:sticky;top:0;background:var(--bg);z-index:5;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{all:unset;cursor:pointer;white-space:nowrap;padding:8px 14px;border-radius:99px;border:1.5px solid var(--line);font-size:14px;font-weight:500;background:#fff}
+nav button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 0 var(--line);margin-bottom:14px}
+.tag{display:inline-block;font-size:12px;font-weight:600;background:var(--soft);border-radius:99px;padding:3px 10px;color:var(--muted);margin-bottom:10px}
+.q{font-family:Fraunces,serif;font-weight:600;font-size:20px;margin:0 0 14px}
+.q b{display:inline-block;min-width:60px;border-bottom:2px solid var(--ink)}
+.opts{display:grid;gap:9px}
+button.opt{all:unset;cursor:pointer;display:flex;gap:12px;align-items:center;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:16px;background:#fff}
+button.opt:hover{border-color:var(--ink)}
+button.opt .l{width:26px;height:26px;border-radius:7px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--muted);flex:none}
+button.opt.ok{border-color:var(--ok);background:var(--okbg)}button.opt.ok .l{background:var(--ok);border-color:var(--ok);color:#fff}
+button.opt.bad{border-color:var(--bad);background:var(--badbg)}button.opt.bad .l{background:var(--bad);border-color:var(--bad);color:#fff}
+button.opt[disabled]{cursor:default}
+.exp{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:15px}
+.exp.ok{background:var(--okbg)}.exp.bad{background:var(--badbg)}
+.row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+button.btn{all:unset;cursor:pointer;flex:1;min-width:120px;text-align:center;padding:13px;border-radius:12px;background:var(--ink);color:#fff;font-weight:600;font-size:15px}
+button.btn.sec{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+button.btn.sm{flex:none;min-width:0;padding:8px 14px;font-size:14px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:6px}
+.bar i{display:block;height:100%;background:var(--ink);transition:width .3s}
+.meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.chip{cursor:pointer;font-size:14px;border:1.5px solid var(--line);border-radius:99px;padding:6px 12px;background:#fff;user-select:none}
+.chip.on{border-color:var(--ink);background:var(--soft);font-weight:600}
+.text{background:var(--soft);border-radius:12px;padding:14px;font-size:15.5px;white-space:pre-line}
+.list{display:grid;gap:10px}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer}
+.item:hover{border-color:var(--ink)}
+.item small{color:var(--muted);display:block}
+.pill{font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--soft);white-space:nowrap}
+.pill.ok{background:var(--okbg);color:var(--ok)}
+textarea{width:100%;min-height:220px;border:1.5px solid var(--line);border-radius:12px;padding:12px;font:inherit;font-size:16px;resize:vertical;background:#fff}
+textarea:focus,select:focus{outline:none;border-color:var(--ink)}
+select{font:inherit;font-size:15px;font-weight:600;color:var(--ink);padding:6px 30px 6px 10px;border:2px solid var(--ink);border-radius:8px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%232b2622' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 10px center;-webkit-appearance:none;appearance:none;margin:2px;opacity:1}
+select option{color:var(--ink);background:#fff}
+select:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+select.ok{border-color:var(--ok);background-color:var(--okbg);color:#1d5c39;-webkit-text-fill-color:#1d5c39}
+select.bad{border-color:var(--bad);background-color:var(--badbg);color:#9b2c2c;-webkit-text-fill-color:#9b2c2c}
+.text select{background-color:#fff}
+.timer{font-family:Fraunces,serif;font-size:34px;font-weight:800}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:15px;cursor:pointer}
+.checks input{margin-top:4px;width:18px;height:18px;accent-color:var(--ink)}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat div{background:var(--soft);border-radius:12px;padding:12px;text-align:center}
+.stat b{font-family:Fraunces,serif;font-size:26px;display:block}
+.stat span{font-size:12px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600}
+.dlg p{margin:6px 0}
+.dlg b{color:var(--muted);font-weight:600}
+.hidden{display:none}
+.small{font-size:13px;color:var(--muted)}
+.score{font-family:Fraunces,serif;font-size:52px;font-weight:800;margin:0;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><span>B1</span> Deutsch Cuaderno</h1>
+<p class="sub">Practica para telc B1 y Goethe-Zertifikat B1. Explicaciones en español.</p>
+<nav id="nav"></nav>
+<div id="app"></div>
+</div>
+<script>
+/* ---------- storage ---------- */
+const store={get(k,d){try{const v=localStorage.getItem('b1_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('b1_'+k,JSON.stringify(v))}catch(e){}}};
+let stats=store.get('stats',{answered:0,correct:0,done:{}});
+function rec(ok){stats.answered++;if(ok)stats.correct++;store.set('stats',stats)}
+function markDone(id){stats.done[id]=true;store.set('stats',stats)}
+const shuffle=a=>{a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a};
+const $=s=>document.querySelector(s);
+const fmt=s=>s.replace('___','<b>&nbsp;</b>');
+
+/* ---------- data: grammar ---------- */
+const G=[
+{c:"Verbos con preposición",q:"Ich interessiere mich ___ Politik.",o:["an","für","über"],a:1,e:"sich interessieren <b>für</b> + Akk. Ojo: das Interesse <b>an</b> + Dativ."},
+{c:"Verbos con preposición",q:"Er denkt oft ___ seine Kindheit.",o:["an","über","von"],a:0,e:"denken <b>an</b> + Akk = pensar en."},
+{c:"Verbos con preposición",q:"Wir haben lange ___ das Problem gesprochen.",o:["mit","für","über"],a:2,e:"sprechen <b>über</b> + Akk = hablar sobre un tema. mit + Dat = con una persona."},
+{c:"Verbos con preposición",q:"Meine Tochter hat Angst ___ Hunden.",o:["vor","von","für"],a:0,e:"Angst haben <b>vor</b> + Dativ (Hunde<b>n</b>)."},
+{c:"Verbos con preposición",q:"Ich warte schon seit einer Stunde ___ den Bus.",o:["für","auf","an"],a:1,e:"warten <b>auf</b> + Akk. Error típico: decir \"für\"."},
+{c:"Verbos con preposición",q:"Sie hat sich ___ den Lärm beschwert.",o:["über","gegen","auf"],a:0,e:"sich beschweren <b>über</b> + Akk."},
+{c:"Verbos con preposición",q:"Ich freue mich schon ___ das Wochenende.",o:["über","auf","an"],a:1,e:"sich freuen <b>auf</b> = algo futuro. <b>über</b> = algo que ya pasó."},
+{c:"Verbos con preposición",q:"Sie hat sich ___ die Stelle als Designerin beworben.",o:["für","auf","um"],a:2,e:"sich bewerben <b>um</b> + Akk (eine Stelle)."},
+{c:"Verbos con preposición",q:"Wir nehmen ___ dem Deutschkurs teil.",o:["an","bei","mit"],a:0,e:"teilnehmen <b>an</b> + Dativ."},
+{c:"Verbos con preposición",q:"Er kümmert sich ___ seine kranke Mutter.",o:["für","um","an"],a:1,e:"sich kümmern <b>um</b> + Akk."},
+{c:"Verbos con preposición",q:"___ denkst du? An meinen Urlaub.",o:["Worauf","Wovon","Woran"],a:2,e:"denken an → <b>Woran</b>? (wo + r + an)."},
+{c:"Verbos con preposición",q:"Hast du mit dem Vermieter über die Heizung gesprochen? Ja, ich habe gestern ___ gesprochen.",o:["darüber","davon","damit"],a:0,e:"sprechen über + cosa → <b>darüber</b>."},
+{c:"Konjunktiv II",q:"Wenn ich mehr Zeit ___, würde ich dich öfter besuchen.",o:["habe","hatte","hätte"],a:2,e:"Condición irreal: wenn + <b>hätte/wäre</b> ... würde + Infinitiv."},
+{c:"Konjunktiv II",q:"Ich an deiner Stelle ___ sofort zum Arzt gehen.",o:["würde","werde","wäre"],a:0,e:"Consejo: Ich an deiner Stelle <b>würde</b>..."},
+{c:"Konjunktiv II",q:"___ Sie mir bitte das Salz geben?",o:["Konnten","Könnten","Kennten"],a:1,e:"<b>Könnten</b> Sie...? = cortesía. Konnten es pasado."},
+{c:"Konjunktiv II",q:"Sie spricht so gut Deutsch, ___ sie in Berlin geboren wäre.",o:["als ob","dass","weil"],a:0,e:"<b>als ob</b> + Konjunktiv II = como si."},
+{c:"Konjunktiv II",q:"Wenn der Zug pünktlich gewesen ___, hätte ich den Termin nicht verpasst.",o:["hätte","wäre","war"],a:1,e:"Pasado irreal: sein → <b>wäre</b> gewesen."},
+{c:"Konjunktiv II",q:"Er tut so, als ob er alles ___.",o:["weiß","wusste","wüsste"],a:2,e:"als ob + Konjunktiv II: wissen → <b>wüsste</b>."},
+{c:"Konjunktiv II",q:"Du bist so müde. Du ___ früher ins Bett gehen.",o:["solltest","sollst","solltet"],a:0,e:"Consejo: du <b>solltest</b> + Infinitiv."},
+{c:"Conectores",q:"Er lernt Deutsch, ___ er in Deutschland arbeiten kann.",o:["obwohl","damit","weil"],a:1,e:"<b>damit</b> = para que."},
+{c:"Conectores",q:"Sie geht in die Stadt, ___ Brot zu kaufen.",o:["damit","für","um"],a:2,e:"<b>um ... zu</b> + Infinitiv (mismo sujeto)."},
+{c:"Conectores",q:"___ es stark regnet, gehen wir spazieren.",o:["Obwohl","Weil","Trotzdem"],a:0,e:"<b>Obwohl</b> = aunque. Verbo al final."},
+{c:"Conectores",q:"Es regnet stark. ___ gehen wir spazieren.",o:["Obwohl","Trotzdem","Weil"],a:1,e:"<b>Trotzdem</b> = aun así, con inversión."},
+{c:"Conectores",q:"Ich bin müde, ___ gehe ich heute früh ins Bett.",o:["deshalb","denn","weil"],a:0,e:"<b>deshalb</b> = por eso, con inversión (gehe ich)."},
+{c:"Conectores",q:"Ich bleibe zu Hause, ___ ich bin krank.",o:["weil","denn","deshalb"],a:1,e:"<b>denn</b> no cambia el orden (ich bin). Con weil sería: weil ich krank bin."},
+{c:"Conectores",q:"Wir fahren nicht mit dem Auto, ___ mit dem Zug.",o:["aber","oder","sondern"],a:2,e:"Después de una negación: nicht ..., <b>sondern</b>."},
+{c:"Conectores",q:"Man lernt eine Sprache am besten, ___ man viel spricht.",o:["damit","ohne","indem"],a:2,e:"<b>indem</b> = mediante / haciendo algo."},
+{c:"Conectores",q:"Je mehr du übst, ___ besser sprichst du.",o:["als","desto","wie"],a:1,e:"<b>je</b> ..., <b>desto</b> ... = cuanto más ..., más ..."},
+{c:"Conectores",q:"Er trinkt ___ Kaffee noch Tee.",o:["weder","entweder","sowohl"],a:0,e:"<b>weder ... noch</b> = ni ... ni."},
+{c:"Conectores",q:"Ich spreche sowohl Spanisch ___ Englisch.",o:["noch","als auch","oder"],a:1,e:"<b>sowohl ... als auch</b> = tanto ... como."},
+{c:"Conectores",q:"Die Wohnung ist ___ klein, aber sehr hell.",o:["zwar","weder","sowohl"],a:0,e:"<b>zwar ... aber</b> = sí ..., pero."},
+{c:"Conectores",q:"Berlin ist größer ___ München.",o:["wie","als","dann"],a:1,e:"Comparativo + <b>als</b>. Igualdad: so groß <b>wie</b>."},
+{c:"Subordinadas",q:"Ich weiß nicht, ___ er heute kommt.",o:["weil","dass","ob"],a:2,e:"<b>ob</b> = si (pregunta indirecta sí/no)."},
+{c:"Subordinadas",q:"___ ich ein Kind war, wohnte ich in Spanien.",o:["Wenn","Als","Wann"],a:1,e:"<b>als</b> = una vez o etapa en el pasado."},
+{c:"Subordinadas",q:"Kannst du mir sagen, ___ der Zug abfährt?",o:["wann","wenn","als"],a:0,e:"Pregunta indirecta: <b>wann</b>."},
+{c:"Subordinadas",q:"Es ist nicht leicht, eine Wohnung in München ___ finden.",o:["um","zu","für"],a:1,e:"Es ist schwer/leicht + <b>zu</b> + Infinitiv."},
+{c:"Subordinadas",q:"___ du gehst, mach bitte das Licht aus.",o:["Nachdem","Seit","Bevor"],a:2,e:"<b>Bevor</b> = antes de que."},
+{c:"Subordinadas",q:"___ ich Zeit habe, lese ich ein Buch.",o:["Als","Wenn","Wann"],a:1,e:"Presente / cada vez: <b>wenn</b>."},
+{c:"Relativas",q:"Das ist die Frau, ___ mich gestern angerufen hat.",o:["deren","der","die"],a:2,e:"Sujeto femenino → <b>die</b>."},
+{c:"Relativas",q:"Das ist der Mann, ___ ich beim Umzug geholfen habe.",o:["den","dem","der"],a:1,e:"helfen + Dativ → <b>dem</b>."},
+{c:"Relativas",q:"Die Kollegin, ___ Auto kaputt ist, kommt mit dem Bus.",o:["deren","dessen","die"],a:0,e:"Posesivo femenino → <b>deren</b>."},
+{c:"Relativas",q:"Die Stadt, in ___ ich wohne, ist sehr grün.",o:["die","der","dem"],a:1,e:"in + Dativ, femenino → <b>der</b>."},
+{c:"Relativas",q:"Die Kinder, mit ___ ich spiele, sind sehr nett.",o:["denen","den","die"],a:0,e:"Dativ plural → <b>denen</b>."},
+{c:"Relativas",q:"Der Mann, ___ Auto vor der Tür steht, ist mein Chef.",o:["deren","dessen","der"],a:1,e:"Posesivo masculino → <b>dessen</b>."},
+{c:"Relativas",q:"Es gibt nichts, ___ ihn interessiert.",o:["das","der","was"],a:2,e:"Tras nichts, alles, etwas → <b>was</b>."},
+{c:"Tiempos",q:"Nachdem wir gegessen hatten, ___ wir spazieren.",o:["gehen","gingen","gegangen"],a:1,e:"nachdem + Plusquamperfekt → principal en Präteritum."},
+{c:"Tiempos",q:"Nachdem er die Prüfung ___ hatte, feierte er.",o:["bestand","bestehen","bestanden"],a:2,e:"hatte + Partizip II: <b>bestanden</b>."},
+{c:"Tiempos",q:"Nachdem sie in Berlin angekommen ___, suchte sie ein Hotel.",o:["hatte","war","ist"],a:1,e:"ankommen va con sein → <b>war</b> angekommen."},
+{c:"Tiempos",q:"Gestern ___ ich leider keine Zeit.",o:["hatte","hätte","habe"],a:0,e:"Präteritum de haben: <b>hatte</b>."},
+{c:"Tiempos",q:"Als Kind ___ ich nicht schwimmen.",o:["könnte","konnte","kann"],a:1,e:"Präteritum del modal: <b>konnte</b>."},
+{c:"Pasiva",q:"Das Haus ___ im Jahr 1990 gebaut.",o:["hat","wurde","wird"],a:1,e:"Pasiva pasado: <b>wurde</b> + Partizip II."},
+{c:"Pasiva",q:"Die Rechnung muss bis Freitag bezahlt ___.",o:["werden","wurden","sein"],a:0,e:"Modal + Partizip II + <b>werden</b>."},
+{c:"Pasiva",q:"In Deutschland ___ viel Bier getrunken.",o:["hat","ist","wird"],a:2,e:"Pasiva presente: <b>wird</b> + Partizip II."},
+{c:"Pasiva",q:"Der Brief ist schon geschickt ___.",o:["geworden","worden","werden"],a:1,e:"Pasiva Perfekt: ist + Partizip II + <b>worden</b> (sin ge-)."},
+{c:"Adjetivos y casos",q:"Ich habe mir einen ___ Pullover gekauft.",o:["neuer","neuen","neue"],a:1,e:"Akk masculino → <b>-en</b>."},
+{c:"Adjetivos y casos",q:"Am Wochenende gehe ich mit meinem ___ Freund ins Kino.",o:["besten","bester","beste"],a:0,e:"Dativ → <b>-en</b>."},
+{c:"Adjetivos y casos",q:"Wir haben ein ___ Wochenende verbracht.",o:["schöne","schönen","schönes"],a:2,e:"ein + neutro Akk → <b>-es</b>."},
+{c:"Adjetivos y casos",q:"Ich trinke gern Tee mit ___ Milch.",o:["frischer","frischen","frische"],a:0,e:"Sin artículo, Dativ femenino → <b>-er</b>."},
+{c:"Adjetivos y casos",q:"Kennst du den ___ Mann dort?",o:["junge","junger","jungen"],a:2,e:"den + Akk masc → <b>-en</b>."},
+{c:"Adjetivos y casos",q:"Ich hänge das Bild an ___ Wand.",o:["der","die","den"],a:1,e:"Movimiento (¿adónde?) → Akk: <b>die</b>."},
+{c:"Adjetivos y casos",q:"Das Bild hängt an ___ Wand.",o:["die","den","der"],a:2,e:"Sin movimiento (¿dónde?) → Dativ: <b>der</b>."},
+{c:"Adjetivos y casos",q:"Ich lege das Buch auf ___ Tisch.",o:["den","dem","der"],a:0,e:"legen = movimiento → Akk: <b>den</b>."},
+{c:"Adjetivos y casos",q:"___ des schlechten Wetters sind wir zu Hause geblieben.",o:["Wegen","Trotz","Während"],a:0,e:"<b>wegen</b> + Genitiv = a causa de."},
+{c:"Adjetivos y casos",q:"___ des Regens haben wir Fußball gespielt.",o:["Wegen","Statt","Trotz"],a:2,e:"<b>trotz</b> + Genitiv = a pesar de."},
+{c:"Adjetivos y casos",q:"Gestern habe ich lange mit meinem ___ gesprochen.",o:["Nachbar","Nachbarn","Nachbars"],a:1,e:"n-Deklination: dem Nachbar<b>n</b>."},
+{c:"Adjetivos y casos",q:"Das Kleid steht ___ wirklich gut.",o:["dich","du","dir"],a:2,e:"stehen, gefallen, helfen → <b>Dativ</b>."},
+{c:"Adjetivos y casos",q:"Ich gratuliere ___ zum Geburtstag.",o:["ihn","ihm","er"],a:1,e:"gratulieren + Dativ → <b>ihm</b>."},
+{c:"Adjetivos y casos",q:"Seit ___ Jahr lerne ich Deutsch.",o:["ein","einen","einem"],a:2,e:"seit + Dativ → <b>einem</b> Jahr."},
+{c:"Verbos especiales",q:"Ich wasche ___ jeden Morgen die Haare.",o:["mich","mir","mein"],a:1,e:"Con otro objeto en Akk, reflexivo en Dativ: <b>mir</b>."},
+{c:"Verbos especiales",q:"Ich muss ___ beeilen.",o:["mich","mir","sich"],a:0,e:"sich beeilen, sin otro objeto → <b>mich</b>."},
+{c:"Verbos especiales",q:"Ich lasse mein Auto in der Werkstatt ___.",o:["reparieren","zu reparieren","repariert"],a:0,e:"<b>lassen</b> + Infinitiv sin zu."},
+{c:"Verbos especiales",q:"Morgen ist Feiertag. Du ___ nicht zu arbeiten.",o:["musst","brauchst","darfst"],a:1,e:"nicht <b>brauchen zu</b> = no hace falta."},
+{c:"Verbos especiales",q:"Hier ___ man nicht rauchen. Das ist verboten.",o:["muss","darf","braucht"],a:1,e:"nicht <b>dürfen</b> = prohibido."},
+{c:"Verbos especiales",q:"Ich habe vergessen, dich ___.",o:["anzurufen","anrufen","zu anrufen"],a:0,e:"Separable: an<b>zu</b>rufen."},
+{c:"Verbos especiales",q:"Er geht zur Arbeit, ___ zu frühstücken.",o:["ohne","statt","um"],a:0,e:"<b>ohne ... zu</b> = sin."},
+{c:"Verbos especiales",q:"Nächstes Jahr ___ ich in Luxemburg arbeiten.",o:["würde","wurde","werde"],a:2,e:"Futur I: <b>werde</b> + Infinitiv."},
+{c:"Vocabulario",q:"Ich muss bis Montag eine Entscheidung ___.",o:["machen","treffen","stellen"],a:1,e:"eine Entscheidung <b>treffen</b>."},
+{c:"Vocabulario",q:"Darf ich Ihnen eine Frage ___?",o:["stellen","fragen","machen"],a:0,e:"eine Frage <b>stellen</b>."},
+{c:"Vocabulario",q:"Ich lege großen Wert ___ Pünktlichkeit.",o:["an","für","auf"],a:2,e:"Wert legen <b>auf</b> + Akk."},
+{c:"Vocabulario",q:"Bitte geben Sie mir ___, wenn Sie Zeit haben.",o:["Bescheid","Auskunft","Antwort"],a:0,e:"<b>Bescheid</b> geben / sagen = avisar."},
+{c:"Vocabulario",q:"Im Praktikum habe ich viele Erfahrungen ___.",o:["gemacht","gesammelt","gehabt"],a:1,e:"Erfahrungen <b>sammeln</b> (también machen, pero sammeln es la combinación típica de examen)."},
+{c:"Vocabulario",q:"Für die Wohnung muss man drei Monatsmieten ___ zahlen.",o:["Kaution","Nebenkosten","Rechnung"],a:0,e:"die <b>Kaution</b> = fianza."},
+];
+
+/* ---------- data: Lesen ---------- */
+const L=[
+{id:"l1",t:"Email personal",tag:"Goethe Lesen 1 · richtig / falsch",text:`Liebe Carmen,
+
+endlich habe ich Zeit, dir zu schreiben! Seit drei Wochen wohne ich jetzt in Bochum. Die Wohnung ist kleiner als meine alte, aber sie hat einen Balkon und liegt nur fünf Minuten vom Bahnhof entfernt. Das ist praktisch, weil ich jeden Tag mit dem Zug nach Essen fahre. Mein neuer Job gefällt mir sehr gut. Die Kollegen sind nett, nur die Arbeitszeiten sind am Anfang anstrengend: Ich fange schon um sieben Uhr an. Dafür habe ich am Freitag schon um 13 Uhr frei.
+
+Am Wochenende war ich zum ersten Mal im Fußballstadion. Eigentlich interessiere ich mich nicht so für Fußball, aber mein Nachbar hatte eine Karte übrig. Die Stimmung war toll! Nächsten Monat feiere ich eine kleine Einweihungsparty. Hättest du Lust zu kommen? Du könntest bei mir übernachten.
+
+Viele Grüße
+Lena`,qs:[
+{q:"Lena wohnt seit einem Monat in Bochum.",o:["richtig","falsch"],a:1,e:"seit drei Wochen"},
+{q:"Die neue Wohnung ist größer als die alte.",o:["richtig","falsch"],a:1,e:"kleiner als meine alte"},
+{q:"Lena fährt mit dem Zug zur Arbeit.",o:["richtig","falsch"],a:0,e:"jeden Tag mit dem Zug nach Essen"},
+{q:"Am Freitag arbeitet Lena nur bis mittags.",o:["richtig","falsch"],a:0,e:"um 13 Uhr frei"},
+{q:"Lena ist ein großer Fußballfan.",o:["richtig","falsch"],a:1,e:"nicht so für Fußball"},
+{q:"Carmen kann bei Lena schlafen.",o:["richtig","falsch"],a:0,e:"Du könntest bei mir übernachten"}]},
+{id:"l2",t:"Anuncios",tag:"Goethe Lesen 3 / telc Lesen 3 · asignar",text:`a) Sprachcafé International: Jeden Mittwoch ab 19 Uhr in der Stadtbibliothek. Deutsch üben mit Muttersprachlern. Kostenlos, ohne Anmeldung.
+b) Fahrradwerkstatt zum Mitmachen: Samstags 10 bis 14 Uhr. Reparieren Sie Ihr Rad selbst, wir helfen. Werkzeug vorhanden.
+c) Abendkurs Buchhaltung: 10 Termine, dienstags 18 bis 21 Uhr, Volkshochschule, 120 Euro.
+d) Babysitter gesucht: Familie in Buer sucht zuverlässige Person für zwei Nachmittage pro Woche. 13 Euro pro Stunde.
+e) Laufgruppe für Anfänger: Sonntags 9 Uhr im Stadtpark. Wir laufen langsam, alle sind willkommen.
+f) Online-Kurs Webdesign: Lernen Sie in 8 Wochen, eigene Websites zu gestalten. Flexible Zeiten.
+0) Ningún anuncio encaja.`,qs:[
+{q:"Ahmed möchte neben dem Studium Geld verdienen und mag Kinder.",o:["a","b","c","d","e","f","0"],a:3,e:"d) Babysitter, 13 Euro pro Stunde"},
+{q:"Sofia will ihr Deutsch verbessern, hat aber wenig Geld.",o:["a","b","c","d","e","f","0"],a:0,e:"a) Sprachcafé, kostenlos"},
+{q:"Tom möchte sportlicher werden, ist aber nicht fit.",o:["a","b","c","d","e","f","0"],a:4,e:"e) für Anfänger, wir laufen langsam"},
+{q:"Mia sucht einen Kurs in Fotografie.",o:["a","b","c","d","e","f","0"],a:6,e:"0) Ningún anuncio es de fotografía. Trampa: f) es diseño web."},
+{q:"Paul arbeitet tagsüber und will sich in Finanzen weiterbilden.",o:["a","b","c","d","e","f","0"],a:2,e:"c) Buchhaltung por la tarde-noche"},
+{q:"Elif hat einen Platten und will lernen, ihn selbst zu reparieren.",o:["a","b","c","d","e","f","0"],a:1,e:"b) Reparieren Sie Ihr Rad selbst"}]},
+{id:"l3",t:"Foro: coches en el centro",tag:"Goethe Lesen 4 · ja / nein",text:`Thema: Sollen Autos in der Innenstadt verboten werden?
+
+Markus, 45: Ich wohne in der Innenstadt und finde den Verkehr unerträglich. Ohne Autos wäre die Luft besser und die Kinder könnten sicher spielen.
+
+Sabine, 62: Ich kann nicht mehr gut laufen. Wenn ich nicht mit dem Auto in die Stadt fahren darf, kann ich dort nicht mehr einkaufen. So eine Regel wäre unfair.
+
+Jonas, 23: Es gibt Busse, Bahnen und Leihräder. Wer wirklich ein Auto braucht, kann am Stadtrand parken. Ich bin dafür.
+
+Petra, 38: Grundsätzlich finde ich die Idee gut, aber nicht, solange der Nahverkehr so schlecht ist. Zuerst müssen mehr Busse fahren, sonst funktioniert das nicht.`,qs:[
+{q:"Ist Markus für das Verbot?",o:["ja","nein"],a:0,e:"Ohne Autos wäre die Luft besser"},
+{q:"Ist Sabine für das Verbot?",o:["ja","nein"],a:1,e:"So eine Regel wäre unfair"},
+{q:"Ist Jonas für das Verbot?",o:["ja","nein"],a:0,e:"Ich bin dafür"},
+{q:"Ist Petra für das Verbot?",o:["ja","nein"],a:1,e:"Pone una condición: ahora mismo no. Trampa típica: \"grundsätzlich gut, aber\"."}]},
+{id:"l4",t:"Artículo: trabajar 4 días",tag:"Goethe Lesen 2 / telc Lesen 2 · a / b / c",text:`Vier Tage arbeiten, voll verdienen?
+
+Immer mehr deutsche Firmen testen die Vier-Tage-Woche. Auch ein Softwareunternehmen aus Dortmund hat das Modell vor einem Jahr eingeführt. Die 40 Mitarbeiter arbeiten jetzt von Montag bis Donnerstag, bekommen aber das gleiche Gehalt wie vorher.
+
+„Am Anfang hatten wir Angst, dass wir weniger schaffen“, erzählt Geschäftsführerin Anke Brandt. „Aber das Gegenteil ist passiert. Die Leute sind konzentrierter und seltener krank.“ Besprechungen dauern jetzt maximal 30 Minuten, und am Vormittag gibt es zwei Stunden ohne E-Mails und Telefon.
+
+Nicht alle sind begeistert. Ein Mitarbeiter aus dem Kundenservice sagt, dass er an den vier Tagen mehr Stress hat. Außerdem müssen Kunden, die am Freitag anrufen, bis Montag warten. Die Firma plant deshalb, dass ab nächstem Jahr zwei Kollegen abwechselnd auch freitags erreichbar sind.`,qs:[
+{q:"Die Mitarbeiter der Firma ...",o:["verdienen jetzt weniger.","verdienen genauso viel wie früher.","arbeiten von Dienstag bis Freitag."],a:1,e:"das gleiche Gehalt wie vorher"},
+{q:"Was ist nach der Einführung passiert?",o:["Die Mitarbeiter schaffen weniger.","Es gibt mehr Krankmeldungen.","Die Mitarbeiter arbeiten konzentrierter."],a:2,e:"konzentrierter und seltener krank"},
+{q:"Am Vormittag ...",o:["gibt es lange Besprechungen.","beantworten alle E-Mails.","gibt es zwei ruhige Stunden."],a:2,e:"zwei Stunden ohne E-Mails und Telefon"},
+{q:"Was plant die Firma?",o:["Freitags sollen einige Mitarbeiter arbeiten.","Die Vier-Tage-Woche soll enden.","Der Kundenservice soll schließen."],a:0,e:"zwei Kollegen abwechselnd auch freitags erreichbar"}]},
+{id:"l5",t:"Sprachbausteine: email formal",tag:"telc Sprachbausteine 1 · a / b / c",text:`Sehr geehrte Damen und Herren,
+
+ich habe (1) ___ Ihrer Website gelesen, dass Sie einen Deutschkurs am Abend anbieten. Ich arbeite tagsüber, (2) ___ kann ich nur abends lernen. Könnten Sie mir bitte sagen, (3) ___ der Kurs noch freie Plätze hat? Außerdem möchte ich wissen, (4) ___ viel der Kurs kostet. Ich (5) ___ mich sehr über eine schnelle Antwort freuen.
+
+Mit freundlichen Grüßen`,qs:[
+{q:"(1)",o:["in","auf","an"],a:1,e:"<b>auf</b> der Website"},
+{q:"(2)",o:["weil","deshalb","denn"],a:1,e:"<b>deshalb</b> + verbo (kann ich)"},
+{q:"(3)",o:["ob","dass","wenn"],a:0,e:"<b>ob</b> = si"},
+{q:"(4)",o:["was","wie","wann"],a:1,e:"<b>wie</b> viel"},
+{q:"(5)",o:["werde","würde","wurde"],a:1,e:"<b>würde</b> = cortesía"}]}
+];
+
+/* ---------- data: Hören ---------- */
+const H=[
+{id:"h1",t:"Mensaje de la consulta médica",tag:"Goethe Hören 1 · 2 veces",times:2,script:[["A","Hallo, hier ist die Praxis Doktor Weber. Wir rufen wegen Ihres Termins am Donnerstag an. Leider ist Frau Doktor Weber an diesem Tag krank. Wir können Ihnen einen neuen Termin am Montag um zehn Uhr anbieten, oder am Dienstag um halb drei. Bitte rufen Sie uns bis Freitag zurück. Und denken Sie daran, Ihre Versicherungskarte mitzubringen, die haben wir noch nicht."]],qs:[
+{q:"Der Termin am Donnerstag findet nicht statt.",o:["richtig","falsch"],a:0,e:"Frau Doktor Weber ist krank"},
+{q:"Der neue Termin am Dienstag ist um ...",o:["13:30 Uhr","14:30 Uhr","15:30 Uhr"],a:1,e:"halb drei = 2:30, por la tarde 14:30"},
+{q:"Was soll die Person mitbringen?",o:["die Überweisung","das Rezept","die Versicherungskarte"],a:2,e:"die haben wir noch nicht"}]},
+{id:"h2",t:"Aviso en la estación",tag:"telc Hören / Goethe Hören 1",times:2,script:[["A","Achtung an Gleis vier. Der ICE sechshundertfünfundzwanzig nach München, planmäßige Abfahrt zehn Uhr fünfzehn, hat heute circa zwanzig Minuten Verspätung. Grund dafür ist eine Reparatur am Zug. Reisende nach Stuttgart nutzen bitte den Regionalexpress um zehn Uhr zweiundzwanzig von Gleis sieben. Wir bitten um Entschuldigung."]],qs:[
+{q:"Der ICE fährt ungefähr um ...",o:["10:15 Uhr","10:35 Uhr","10:22 Uhr"],a:1,e:"10:15 + 20 Minuten Verspätung"},
+{q:"Warum hat der Zug Verspätung?",o:["wegen des Wetters","wegen einer Reparatur","wegen eines Streiks"],a:1,e:"eine Reparatur am Zug"},
+{q:"Reisende nach Stuttgart sollen ...",o:["auf Gleis 4 warten.","den ICE nehmen.","zu Gleis 7 gehen."],a:2,e:"Regionalexpress von Gleis sieben"}]},
+{id:"h3",t:"Conversación en el tranvía",tag:"Goethe Hören 3 · 1 vez",times:1,script:[
+["A","Hey Tim! Was machst du denn hier? Du fährst doch sonst immer mit dem Fahrrad."],
+["B","Ja, aber mein Fahrrad ist seit gestern kaputt. Der Reifen. Ich bringe es am Samstag in die Werkstatt."],
+["A","Ach so. Und, wie läuft es bei der neuen Arbeit?"],
+["B","Ganz gut eigentlich. Das Team ist super, aber ich muss viel mehr Englisch sprechen als gedacht. Die Hälfte der Kollegen kommt aus dem Ausland."],
+["A","Das ist doch gut für dich! Sag mal, kommst du am Freitag zu Annas Geburtstag?"],
+["B","Ich wollte eigentlich, aber meine Eltern besuchen mich am Wochenende. Sie kommen schon Freitagabend. Vielleicht schaffe ich es später noch."],
+["A","Okay, ich sag Anna Bescheid. Oh, ich muss hier aussteigen. Tschüss!"]],qs:[
+{q:"Tim fährt normalerweise mit dem Rad.",o:["richtig","falsch"],a:0,e:"sonst immer mit dem Fahrrad"},
+{q:"Tim repariert sein Fahrrad selbst.",o:["richtig","falsch"],a:1,e:"bringt es in die Werkstatt"},
+{q:"Tim spricht bei der Arbeit weniger Englisch als erwartet.",o:["richtig","falsch"],a:1,e:"viel mehr als gedacht"},
+{q:"Tims Eltern kommen am Samstag.",o:["richtig","falsch"],a:1,e:"schon Freitagabend"},
+{q:"Tim kommt vielleicht später zur Party.",o:["richtig","falsch"],a:0,e:"Vielleicht schaffe ich es später noch"}]},
+{id:"h4",t:"Debate de radio: redes sociales",tag:"Goethe Hören 4 · ¿quién lo dice?",times:2,script:[
+["M","Herzlich willkommen zu unserer Sendung. Heute sprechen wir über soziale Netzwerke. Bei mir sind die Lehrerin Frau Kraus und der Student Herr Demir. Frau Kraus, wie sehen Sie das?"],
+["A","Ich sehe jeden Tag, dass meine Schüler müde sind, weil sie bis spät in der Nacht am Handy sind. Ich finde, Eltern sollten klare Regeln machen."],
+["B","Das verstehe ich, aber für mich sind soziale Netzwerke sehr wichtig. Ich habe über Instagram sogar meinen Nebenjob gefunden."],
+["M","Herr Demir, verbringen Sie viel Zeit online?"],
+["B","Ehrlich gesagt, zu viel. Deshalb habe ich jetzt eine App, die mir sagt, wann ich eine Pause machen soll."],
+["A","Das ist eine gute Idee. In der Schule sprechen wir jetzt auch darüber, wie man falsche Nachrichten erkennt."]],qs:[
+{q:"Kinder brauchen Regeln von ihren Eltern.",o:["Moderator","Frau Kraus","Herr Demir"],a:1,e:"Eltern sollten klare Regeln machen"},
+{q:"Durch ein soziales Netzwerk hat er Arbeit gefunden.",o:["Moderator","Frau Kraus","Herr Demir"],a:2,e:"über Instagram meinen Nebenjob"},
+{q:"Eine App hilft, weniger online zu sein.",o:["Moderator","Frau Kraus","Herr Demir"],a:2,e:"eine App, die mir sagt, wann ich Pause machen soll"},
+{q:"Man muss lernen, Fake News zu erkennen.",o:["Moderator","Frau Kraus","Herr Demir"],a:1,e:"wie man falsche Nachrichten erkennt"}]}
+];
+
+/* ---------- data: Schreiben ---------- */
+const S=[
+{id:"s1",t:"Te has mudado",type:"Informal · Goethe Teil 1",w:80,min:20,task:"Te has mudado. Escribe a tu amigo Jonas.",pts:["Describe la nueva casa","Cuenta qué te gusta del barrio","Invítalo a visitarte y propón una fecha"],model:`Lieber Jonas,
+
+endlich habe ich Zeit, dir zu schreiben! Seit zwei Wochen wohne ich in meiner neuen Wohnung in Buer. Sie hat zwei Zimmer, eine helle Küche und einen kleinen Balkon. Das Viertel gefällt mir sehr, weil es ruhig ist und trotzdem viele Cafés gibt. Außerdem ist der Park nur fünf Minuten entfernt. Hättest du Lust, mich bald zu besuchen? Wie wäre es mit dem 15. November? Dann könnten wir zusammen kochen.
+
+Liebe Grüße
+David`},
+{id:"s2",t:"Homeoffice para todos",type:"Foro · Goethe Teil 2",w:80,min:25,task:"En un foro se discute: ¿Debería todo el mundo poder trabajar desde casa? Escribe tu opinión.",pts:["Da tu opinión clara","Da al menos un argumento a favor y uno en contra","Usa un ejemplo personal","Termina con una conclusión"],model:`Ich finde Homeoffice grundsätzlich eine gute Idee. Ein großer Vorteil ist, dass man keine Zeit im Stau verliert und flexibler arbeiten kann. Ich arbeite selbst zwei Tage pro Woche zu Hause und kann mich dort besser konzentrieren. Andererseits fehlt mir manchmal der direkte Kontakt zu den Kollegen. Deshalb bin ich der Meinung, dass eine Mischung am besten ist: Man sollte einige Tage im Büro und einige zu Hause arbeiten können.`},
+{id:"s3",t:"Cancelar cita con la profesora",type:"Formal corto · Goethe Teil 3",w:40,min:15,task:"No puedes ir a la cita con tu profesora, Frau Schmidt.",pts:["Discúlpate","Explica por qué","Propón otra cita"],model:`Sehr geehrte Frau Schmidt,
+
+leider kann ich am Mittwoch nicht zu unserem Termin kommen, weil ich zum Arzt muss. Das tut mir sehr leid. Wäre es möglich, nächste Woche einen neuen Termin zu vereinbaren? Am Montag oder Dienstag hätte ich Zeit.
+
+Mit freundlichen Grüßen
+David Quirós`},
+{id:"s4",t:"Reclamación: cafetera rota",type:"Semiformal · telc",w:120,min:30,task:"Has comprado una cafetera online y no funciona. Escribe a la tienda.",pts:["Qué compraste y cuándo","Cuál es el problema","Qué esperas de la tienda","Cómo pueden contactarte"],model:`Sehr geehrte Damen und Herren,
+
+am 20. Oktober habe ich in Ihrem Online-Shop eine Kaffeemaschine (Modell CM 300) bestellt. Sie wurde drei Tage später geliefert.
+
+Leider funktioniert die Maschine nicht richtig. Nach zwei Tagen kam plötzlich kein Wasser mehr, obwohl der Tank voll war. Ich habe die Bedienungsanleitung genau gelesen, aber das Problem nicht lösen können.
+
+Deshalb möchte ich Sie bitten, mir eine neue Maschine zu schicken oder mir das Geld zurückzuerstatten. Die Rechnung habe ich angehängt.
+
+Sie erreichen mich per E-Mail oder unter 0170 1234567, am besten nach 17 Uhr.
+
+Ich freue mich auf Ihre schnelle Antwort.
+
+Mit freundlichen Grüßen
+David Quirós`},
+{id:"s5",t:"No puedes ir a la boda",type:"Informal · Goethe Teil 1",w:80,min:20,task:"Tu amiga Sara se casa y no puedes ir a la boda.",pts:["Felicítala","Explica por qué no puedes ir","Propón veros después de la boda"]},
+{id:"s6",t:"Curso de cocina",type:"Informal · Goethe Teil 1",w:80,min:20,task:"Has hecho un curso de cocina. Escribe a un amigo.",pts:["Cuenta cómo fue","Qué aprendiste","Recomiéndalo o no, y por qué"]},
+{id:"s7",t:"Niños y móvil",type:"Foro · Goethe Teil 2",w:80,min:25,task:"Foro: ¿Deberían los niños tener móvil antes de los 12 años?",pts:["Tu opinión","Ventaja","Desventaja","Ejemplo o experiencia"]},
+{id:"s8",t:"Campo o ciudad",type:"Foro · Goethe Teil 2",w:80,min:25,task:"Foro: ¿Es mejor vivir en el campo o en la ciudad?",pts:["Tu opinión","Dos argumentos","Ejemplo personal"]},
+{id:"s9",t:"Ruido del vecino",type:"Formal corto · Goethe Teil 3",w:40,min:15,task:"Tu vecino hace ruido por las noches. Escribe a la Hausverwaltung.",pts:["Describe el problema","Desde cuándo","Pide una solución"]},
+{id:"s10",t:"Alquilar una habitación",type:"Semiformal · telc",w:120,min:30,task:"Has visto un anuncio de una habitación. Escribe a la persona.",pts:["Preséntate","Pregunta por el precio y los gastos","Pregunta desde cuándo está libre","Pide una cita para verla"]},
+{id:"s11",t:"Vuelo cancelado",type:"Semiformal · telc",w:120,min:30,task:"Tu vuelo se canceló. Escribe a la aerolínea.",pts:["Qué vuelo y cuándo","Qué pasó","Qué gastos tuviste","Qué esperas"]}
+];
+const PHRASES={inf:["Liebe/Lieber ...,","Vielen Dank für deine E-Mail.","Entschuldige, dass ich erst jetzt schreibe.","Hättest du Lust, ...?","Wie wäre es mit ...?","Ich freue mich auf deine Antwort.","Liebe Grüße"],for:["Sehr geehrte Damen und Herren,","Sehr geehrte Frau ... / Sehr geehrter Herr ...,","Ich schreibe Ihnen, weil ...","Könnten Sie mir bitte mitteilen, ...?","Ich wäre Ihnen dankbar, wenn ...","Wäre es möglich, ...?","Ich freue mich auf Ihre Antwort.","Mit freundlichen Grüßen"],op:["Meiner Meinung nach ...","Ich bin der Meinung, dass ...","Ein Vorteil ist, dass ...","Ein Nachteil ist ...","Einerseits ..., andererseits ...","Aus eigener Erfahrung weiß ich, dass ...","Deshalb finde ich ..."]};
+
+/* ---------- data: Sprechen ---------- */
+const PRES=["Kinder und Handy","Ohne Auto leben","Homeoffice","Online einkaufen oder im Geschäft?","Allein oder mit anderen reisen","Hochzeit: großes Fest oder kleine Feier?","Sport in der Freizeit","Vegetarisch essen","In der Stadt oder auf dem Land wohnen","Haustiere in der Wohnung","Ehrenamtlich arbeiten","Fremdsprachen lernen"];
+const PLAN=[
+{t:"Fiesta de fin de curso",p:["Wann und wo?","Essen und Getränke","Wer wird eingeladen?","Wer macht was?"]},
+{t:"Regalo de despedida para una compañera",p:["Was schenken?","Wie viel Geld?","Wer kauft es?","Wann übergeben?"]},
+{t:"Excursión de un día a Köln",p:["Wann fahren?","Wie hinkommen?","Was besichtigen?","Was mitnehmen?"]},
+{t:"Ayudar a un amigo con la mudanza",p:["Wann?","Wer hilft noch?","Transport","Essen für die Helfer"]},
+{t:"Visita de un amigo extranjero",p:["Wo schläft er?","Was zeigen wir ihm?","Essen gehen wo?","Wer holt ihn ab?"]}];
+const REDE=[["Proponer","Ich schlage vor, dass wir ... · Wie wäre es, wenn wir ...? · Wir könnten doch ... · Was hältst du von ...?"],["Aceptar","Das ist eine gute Idee! · Einverstanden. · So machen wir das."],["Rechazar","Das finde ich nicht so gut, weil ... · Vielleicht lieber ... · Da habe ich leider keine Zeit."],["Preguntar","Was meinst du? · Hast du eine andere Idee? · Wann hättest du Zeit?"],["Cerrar","Also, wir treffen uns am ... · Ich kümmere mich um ..., und du ..."],["Ganar tiempo","Moment, wie sagt man das? · Also, ich meine ... · Könntest du das bitte wiederholen?"]];
+
+/* ---------- data: Simulacro ---------- */
+const SIM_A={text:`Liebe Frau Becker,
+
+vielen Dank (1) ___ Ihre Einladung zum Sommerfest. Ich komme sehr gern, (2) ___ ich muss etwas später kommen. Am Samstag arbeite ich (3) ___ 15 Uhr. Danach fahre ich direkt zu Ihnen. Soll ich etwas (4) ___ Essen mitbringen? Ich könnte einen Kuchen backen, (5) ___ Sie möchten. Meine Schwester, (6) ___ gerade bei mir zu Besuch ist, würde auch gern mitkommen. Wäre das in Ordnung? Sie hat Sie schon (7) ___ Jahr auf dem Straßenfest kennengelernt. Bitte geben Sie mir kurz Bescheid, (8) ___ wir zu zweit kommen dürfen. Ich freue mich schon (9) ___ den Nachmittag. Wenn das Wetter gut (10) ___, wird es bestimmt wunderbar.
+
+Herzliche Grüße`,qs:[["für","über","von",0],["denn","aber","sondern",1],["seit","bis","ab",1],["zu","für","zum",2],["wenn","als","ob",0],["der","die","deren",1],["letzten","letztes","letzte",1],["dass","wann","ob",2],["auf","über","an",0],["ist","wäre","sei",0]]};
+const SIM_B={words:["ALS","BEVOR","DAMIT","DESHALB","GEWORDEN","IHN","INDEM","LASSEN","OBWOHL","SICH","TROTZ","WEDER","WURDE","ZU","ZWAR"],text:`Mein Nachbar Herr Ortiz ist vor zehn Jahren aus Kolumbien nach Deutschland gekommen. [11] er ankam, sprach er [12] Deutsch noch Englisch. [13] hat er sofort einen Kurs besucht. Er hat viel gelernt, [14] er jeden Abend Nachrichten gesehen hat. [15] er am Anfang keine Freunde hatte, war er nie allein: Er hat [16] in einem Fußballverein angemeldet. Heute arbeitet er als Elektriker. Letztes Jahr [17] er sogar zum Teamleiter befördert. Seine Kollegen mögen [18] sehr. Es macht ihm Spaß, anderen Neuankömmlingen [19] helfen. Nächstes Jahr möchte er sein Haus renovieren [20].`,ans:["ALS","WEDER","DESHALB","INDEM","OBWOHL","SICH","WURDE","IHN","ZU","LASSEN"]};
+
+/* ---------- views ---------- */
+const TABS=[["inicio","Inicio"],["gram","Gramática"],["lesen","Lesen"],["hoeren","Hören"],["schreiben","Schreiben"],["sprechen","Sprechen"],["sim","Simulacro"]];
+let tab="inicio",timerInt=null;
+function stopTimer(){if(timerInt){clearInterval(timerInt);timerInt=null}try{speechSynthesis.cancel()}catch(e){}}
+function go(t){stopTimer();tab=t;renderNav();({inicio,gram,lesen,hoeren,schreiben,sprechen,sim})[t]();window.scrollTo(0,0)}
+function renderNav(){$('#nav').innerHTML=TABS.map(([k,v])=>`<button class="${k===tab?'on':''}" data-t="${k}">${v}</button>`).join('');document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.t))}
+const app=()=>$('#app');
+
+function inicio(){
+  const pct=stats.answered?Math.round(stats.correct/stats.answered*100):0;
+  const all=[...L,...H,...S].length,done=Object.keys(stats.done).length;
+  app().innerHTML=`<div class="card"><h2>Tu progreso</h2><div class="stat"><div><b>${stats.answered}</b><span>respuestas</span></div><div><b>${pct}%</b><span>acierto</span></div><div><b>${done}/${all}</b><span>tareas hechas</span></div></div>
+  <p class="small" style="margin:10px 0 0">El progreso se guarda en este navegador.</p></div>
+  <div class="card"><h2>Cómo es el examen</h2><p class="small" style="margin-top:0">Aprobar = 60 % en cada parte.</p>
+  <h3>Goethe-Zertifikat B1 (4 módulos, cada uno 100 puntos)</h3>
+  <table><tr><th>Módulo</th><th>Partes</th><th>Tiempo</th></tr>
+  <tr><td>Lesen</td><td>Email, artículos, anuncios, foro, normas (30 ítems)</td><td>65 min</td></tr>
+  <tr><td>Hören</td><td>Avisos, charla, conversación, debate (30 ítems)</td><td>40 min</td></tr>
+  <tr><td>Schreiben</td><td>Email informal 80 · foro 80 · email formal 40 palabras</td><td>60 min</td></tr>
+  <tr><td>Sprechen</td><td>Planear juntos · presentación · reaccionar</td><td>15 min</td></tr></table>
+  <h3>telc Deutsch B1 (300 puntos: escrito 225, oral 75)</h3>
+  <table><tr><th>Parte</th><th>Qué haces</th><th>Tiempo</th></tr>
+  <tr><td>Lesen + Sprachbausteine</td><td>Titulares, artículo, anuncios + 20 huecos de gramática y léxico</td><td>90 min</td></tr>
+  <tr><td>Hören</td><td>3 partes richtig / falsch</td><td>ca. 30 min</td></tr>
+  <tr><td>Schreiben</td><td>Un email con 4 puntos guía</td><td>30 min</td></tr>
+  <tr><td>Sprechen</td><td>Conocerse · hablar de un tema · planear</td><td>15 min</td></tr></table>
+  <p class="small">Fuentes: <a href="https://www.goethe.de/pro/relaunch/prf/materialien/B1/B1_Uebungssatz_Erwachsene.pdf">Goethe Übungssatz B1</a>, <a href="https://www.telc.net/fileadmin/user_upload/Downloads_Verlag/ERRATA_U2_4014-TPR-2501A_web.pdf">telc Testformat</a>, <a href="https://www.klett-sprachen.de/c-2557">Klett</a>. DTZ desde 1.11.2026: B1 en Sprechen, B1 en Hören/Lesen o Schreiben, mínimo A2 en la otra (<a href="https://migrando.de/?p=311362">migrando.de</a>).</p></div>
+  <div class="card"><h2>Empieza aquí</h2><div class="list">
+  ${TABS.slice(1).map(([k,v])=>`<div class="item" data-t="${k}"><div><b>${v}</b><small>${{gram:G.length+' preguntas en 12 temas',lesen:L.length+' textos estilo examen',hoeren:H.length+' audios con voz alemana',schreiben:S.length+' tareas con cronómetro',sprechen:'Presentación, planear y Redemittel',sim:'Sprachbausteine con tiempo real'}[k]}</small></div><span>→</span></div>`).join('')}</div></div>`;
+  document.querySelectorAll('.item[data-t]').forEach(b=>b.onclick=()=>go(b.dataset.t));
+}
+
+/* ----- generic MC runner ----- */
+function runMC(deck,opts){
+  let i=0,score=0,wrong=[];
+  function show(){
+    const x=deck[i];let answered=false;
+    app().innerHTML=`${opts.header||''}<div class="bar"><i style="width:${i/deck.length*100}%"></i></div><div class="meta"><span>${i+1} / ${deck.length}</span><span id="sc">✓ ${score}</span></div>
+    <div class="card">${x.c?`<span class="tag">${x.c}</span>`:''}<p class="q">${fmt(x.q)}</p><div class="opts">${x.o.map((o,k)=>`<button class="opt" data-k="${k}"><span class="l">${'abcdefg'[k]}</span>${o}</button>`).join('')}</div><div id="exp"></div>
+    <div class="row"><button class="btn sec sm" id="quit">Salir</button><button class="btn hidden" id="next">${i+1<deck.length?'Siguiente':'Resultado'}</button></div></div>${opts.footer||''}`;
+    if(opts.after)opts.after();
+    app().querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      if(answered)return;answered=true;const k=+b.dataset.k,ok=k===x.a;rec(ok);
+      const bs=app().querySelectorAll('.opt');bs.forEach(z=>z.disabled=true);bs[x.a].classList.add('ok');if(!ok)bs[k].classList.add('bad');
+      if(ok)score++;else wrong.push(x);
+      $('#exp').innerHTML=`<div class="exp ${ok?'ok':'bad'}"><b>${ok?'¡Richtig!':'Correcta: '+x.o[x.a]}</b><br>${x.e}</div>`;
+      $('#sc').textContent='✓ '+score;$('#next').classList.remove('hidden');
+    });
+    $('#next').onclick=()=>{i++;i<deck.length?show():end()};
+    $('#quit').onclick=opts.back;
+  }
+  function end(){
+    if(opts.id)markDone(opts.id);
+    const p=Math.round(score/deck.length*100);
+    app().innerHTML=`<div class="card"><p class="score">${score}/${deck.length}</p><p style="text-align:center;margin:0">${p}% · ${p>=60?'Aprobado':'Necesitas 60 %'}</p>
+    <div class="row"><button class="btn" id="again">Otra vez</button>${wrong.length?'<button class="btn sec" id="retry">Repetir fallos</button>':''}<button class="btn sec" id="bk">Volver</button></div></div>
+    ${wrong.length?`<div class="card"><h3 style="margin-top:0">Para repasar</h3>${wrong.map(x=>`<p style="margin:0 0 10px">${x.q.replace('___','<b style="color:var(--ok)">'+x.o[x.a]+'</b>')}<br><span class="small">${x.e}</span></p>`).join('')}</div>`:''}`;
+    $('#again').onclick=()=>{i=0;score=0;wrong=[];show()};
+    if($('#retry'))$('#retry').onclick=()=>{deck=wrong;i=0;score=0;wrong=[];show()};
+    $('#bk').onclick=opts.back;
+  }
+  show();
+}
+
+/* ----- Gramática ----- */
+let gsel=null;
+function gram(){
+  const cats=[...new Set(G.map(x=>x.c))];if(!gsel)gsel=new Set(cats);
+  app().innerHTML=`<div class="card"><h2>Gramática</h2><p class="small" style="margin-top:0">Elige temas. Las opciones se mezclan cada vez.</p>
+  <div class="chips">${cats.map(c=>`<span class="chip ${gsel.has(c)?'on':''}" data-c="${c}">${c} <span class="small">${G.filter(x=>x.c===c).length}</span></span>`).join('')}</div>
+  <div class="row" style="margin-top:0"><button class="btn sec sm" id="all">Todos</button><button class="btn sec sm" id="none">Ninguno</button></div>
+  <div class="row"><button class="btn sec" data-n="10">10 preguntas</button><button class="btn sec" data-n="20">20</button><button class="btn" data-n="999">Todas</button></div></div>
+  <div class="card"><h3 style="margin-top:0">Chuleta rápida</h3>
+  <table><tr><th>Tipo</th><th>Conectores</th><th>Verbo</th></tr>
+  <tr><td>Posición 0</td><td>und, aber, oder, denn, sondern</td><td>normal</td></tr>
+  <tr><td>Adverbio</td><td>deshalb, trotzdem, dann, außerdem, sonst</td><td>justo después</td></tr>
+  <tr><td>Subordinante</td><td>weil, dass, ob, obwohl, wenn, als, damit, nachdem, bevor, indem</td><td>al final</td></tr></table>
+  <h3>Relativos</h3><table><tr><th></th><th>m</th><th>f</th><th>n</th><th>Pl</th></tr><tr><td>Nom</td><td>der</td><td>die</td><td>das</td><td>die</td></tr><tr><td>Akk</td><td>den</td><td>die</td><td>das</td><td>die</td></tr><tr><td>Dat</td><td>dem</td><td>der</td><td>dem</td><td>denen</td></tr><tr><td>Gen</td><td>dessen</td><td>deren</td><td>dessen</td><td>deren</td></tr></table>
+  <h3>Pasiva</h3><p class="small" style="margin:0">wird gemacht · wurde gemacht · ist gemacht worden · muss gemacht werden</p></div>`;
+  app().querySelectorAll('.chip').forEach(c=>c.onclick=()=>{gsel.has(c.dataset.c)?gsel.delete(c.dataset.c):gsel.add(c.dataset.c);gram()});
+  $('#all').onclick=()=>{gsel=new Set(cats);gram()};$('#none').onclick=()=>{gsel=new Set();gram()};
+  app().querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{
+    const pool=G.filter(x=>gsel.has(x.c));if(!pool.length)return;
+    const deck=shuffle(pool).slice(0,+b.dataset.n).map(x=>{const idx=shuffle(x.o.map((_,k)=>k));return{...x,o:idx.map(k=>x.o[k]),a:idx.indexOf(x.a)}});
+    runMC(deck,{back:gram});
+  });
+}
+
+/* ----- Lesen ----- */
+function lesen(){
+  app().innerHTML=`<div class="card"><h2>Lesen</h2><p class="small" style="margin-top:0">Lee primero las preguntas, luego busca sinónimos en el texto. Ojo con trampas como "grundsätzlich gut, aber ...".</p><div class="list">
+  ${L.map(x=>`<div class="item" data-id="${x.id}"><div><b>${x.t}</b><small>${x.tag}</small></div>${stats.done[x.id]?'<span class="pill ok">hecho</span>':'<span class="pill">'+x.qs.length+' ítems</span>'}</div>`).join('')}</div></div>`;
+  app().querySelectorAll('.item').forEach(b=>b.onclick=()=>{const x=L.find(z=>z.id===b.dataset.id);
+    const header=`<div class="card"><span class="tag">${x.tag}</span><h2>${x.t}</h2><div class="text">${x.text}</div></div>`;
+    runMC(x.qs.map(q=>({...q})),{id:x.id,back:lesen,header});});
+}
+
+/* ----- Hören ----- */
+let rate=0.9;
+function speak(script,onend){
+  try{
+    speechSynthesis.cancel();
+    const vs=speechSynthesis.getVoices().filter(v=>/^de/i.test(v.lang));
+    script.forEach(([who,txt],n)=>{const u=new SpeechSynthesisUtterance(txt);u.lang='de-DE';u.rate=rate;
+      if(vs.length){u.voice=vs[(who==='B'?1:who==='M'?2:0)%vs.length]}
+      u.pitch=who==='B'?0.8:who==='M'?1.1:1.15;
+      if(n===script.length-1&&onend)u.onend=onend;speechSynthesis.speak(u)});
+    return true;
+  }catch(e){return false}
+}
+function hoeren(){
+  app().innerHTML=`<div class="card"><h2>Hören</h2><p class="small" style="margin-top:0">El audio usa la voz alemana de tu dispositivo. Lee las preguntas antes de darle a play. El texto se muestra al terminar.</p>
+  <p class="small">Velocidad: <select id="rate"><option value="0.75">lenta</option><option value="0.9" selected>normal</option><option value="1.05">examen</option></select></p>
+  <div class="list">${H.map(x=>`<div class="item" data-id="${x.id}"><div><b>${x.t}</b><small>${x.tag}</small></div>${stats.done[x.id]?'<span class="pill ok">hecho</span>':'<span class="pill">'+x.qs.length+' ítems</span>'}</div>`).join('')}</div></div>
+  <div class="card"><h3 style="margin-top:0">Práctica diaria</h3><p class="small" style="margin:0"><a href="https://www.dw.com/de/deutsch-lernen/nachrichten/s-8030">Langsam gesprochene Nachrichten (DW)</a> · <a href="https://www.youtube.com/@EasyGerman">Easy German</a> · <a href="https://www.tagesschau.de/100sekunden">Tagesschau in 100 Sekunden</a></p></div>`;
+  $('#rate').value=String(rate);$('#rate').onchange=e=>rate=+e.target.value;
+  app().querySelectorAll('.item').forEach(b=>b.onclick=()=>{const x=H.find(z=>z.id===b.dataset.id);let plays=0;
+    const header=`<div class="card"><span class="tag">${x.tag}</span><h2>${x.t}</h2>
+    <div class="row" style="margin-top:0"><button class="btn" id="play">▶ Escuchar (${x.times}×)</button><button class="btn sec sm" id="stop">■</button></div>
+    <p class="small" id="pinfo">Se oye ${x.times===1?'una vez':'dos veces'}, como en el examen.</p>
+    <details class="small"><summary>Ver transcripción</summary><div class="dlg">${x.script.map(([w,t])=>`<p><b>${x.script.length>1?{A:'A',B:'B',M:'Moderador'}[w]+': ':''}</b>${t}</p>`).join('')}</div></details></div>`;
+    runMC(x.qs.map(q=>({...q})),{id:x.id,back:hoeren,header,after(){
+      const p=$('#play');if(!p)return;
+      p.onclick=()=>{if(plays>=x.times){$('#pinfo').textContent='Ya lo escuchaste las veces del examen. Puedes ver la transcripción.';return}plays++;
+        if(!speak(x.script,()=>{}))$('#pinfo').textContent='Tu navegador no permite audio aquí. Abre la transcripción y pide a alguien que te la lea.';
+        else $('#pinfo').textContent=`Reproducción ${plays} de ${x.times}`};
+      $('#stop').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}};
+    }});});
+}
+
+/* ----- Schreiben ----- */
+function schreiben(){
+  app().innerHTML=`<div class="card"><h2>Schreiben</h2><p class="small" style="margin-top:0">Cubre todos los puntos guía, un párrafo por punto. Respeta las palabras (unas 10 de más está bien).</p><div class="list">
+  ${S.map(x=>`<div class="item" data-id="${x.id}"><div><b>${x.t}</b><small>${x.type} · ${x.w} palabras · ${x.min} min</small></div>${stats.done[x.id]?'<span class="pill ok">hecho</span>':x.model?'<span class="pill">con modelo</span>':''}</div>`).join('')}</div></div>`;
+  app().querySelectorAll('.item').forEach(b=>b.onclick=()=>writeTask(S.find(z=>z.id===b.dataset.id)));
+}
+function writeTask(x){
+  const draft=store.get('draft_'+x.id,'');let left=x.min*60;
+  const isFor=/Formal|Semiformal/.test(x.type),isOp=/Foro/.test(x.type);
+  const ph=[...(isOp?PHRASES.op:isFor?PHRASES.for:PHRASES.inf)];
+  app().innerHTML=`<div class="card"><span class="tag">${x.type}</span><h2>${x.t}</h2><p>${x.task}</p>
+  <div class="checks">${x.pts.map((p,k)=>`<label><input type="checkbox"> ${p}</label>`).join('')}</div>
+  <div class="row" style="align-items:center"><span class="timer" id="tm">${x.min}:00</span><button class="btn sm" id="ts">Empezar</button><button class="btn sec sm" id="tr">Reiniciar</button></div></div>
+  <div class="card"><textarea id="ta" placeholder="Escribe aquí en alemán...">${draft}</textarea>
+  <div class="meta" style="margin:8px 0 0"><span id="wc">0 palabras</span><span>objetivo: ${x.w}</span></div></div>
+  <div class="card"><h3 style="margin-top:0">Frases útiles (toca para insertar)</h3><div class="chips">${ph.map(p=>`<span class="chip">${p}</span>`).join('')}</div></div>
+  <div class="card"><h3 style="margin-top:0">Revisión final</h3><div class="checks">
+  ${['Saludo y despedida correctos ('+(isFor?'Sie, Mit freundlichen Grüßen':'du, Liebe Grüße')+')','Todos los puntos guía, en orden','Al menos 3 conectores (weil, deshalb, außerdem, trotzdem)','Verbo al final en las subordinadas','Sustantivos con mayúscula','Número de palabras correcto'].map(p=>`<label><input type="checkbox"> ${p}</label>`).join('')}</div>
+  <div class="row">${x.model?'<button class="btn sec" id="sm">Ver modelo</button>':''}<button class="btn" id="fin">Terminado</button></div>
+  <div id="model" class="hidden" style="margin-top:12px"><div class="text">${x.model||''}</div></div></div>
+  <div class="row"><button class="btn sec" id="bk">Volver a tareas</button></div>`;
+  const ta=$('#ta'),wc=()=>{const n=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;$('#wc').textContent=n+' palabras';$('#wc').style.color=n>=x.w-10&&n<=x.w+25?'var(--ok)':'var(--muted)'};
+  ta.oninput=()=>{wc();store.set('draft_'+x.id,ta.value)};wc();
+  app().querySelectorAll('.chips .chip').forEach(c=>c.onclick=()=>{const s=ta.selectionStart??ta.value.length;ta.value=ta.value.slice(0,s)+c.textContent+' '+ta.value.slice(s);ta.focus();ta.oninput()});
+  const tick=()=>{left--;const m=Math.max(0,Math.floor(left/60)),s=Math.max(0,left%60);$('#tm').textContent=m+':'+String(s).padStart(2,'0');if(left<=0){stopTimer();$('#tm').style.color='var(--bad)';$('#tm').textContent='¡Tiempo!'}};
+  $('#ts').onclick=()=>{if(timerInt){stopTimer();$('#ts').textContent='Seguir'}else{timerInt=setInterval(tick,1000);$('#ts').textContent='Pausa'}};
+  $('#tr').onclick=()=>{stopTimer();left=x.min*60;$('#tm').textContent=x.min+':00';$('#tm').style.color='';$('#ts').textContent='Empezar'};
+  if($('#sm'))$('#sm').onclick=()=>$('#model').classList.toggle('hidden');
+  $('#fin').onclick=()=>{stopTimer();markDone(x.id);$('#fin').textContent='¡Guardado! ✓'};
+  $('#bk').onclick=()=>{stopTimer();schreiben()};
+}
+
+/* ----- Sprechen ----- */
+function sprechen(){
+  const topic=PRES[Math.floor(Math.random()*PRES.length)],plan=PLAN[Math.floor(Math.random()*PLAN.length)];
+  app().innerHTML=`<div class="card"><span class="tag">Goethe Teil 2 · presentación 3 min</span><h2 id="tp">${topic}</h2>
+  <ol style="padding-left:20px;margin:0">
+  <li><b>Tema:</b> Ich möchte heute über das Thema ... sprechen.</li>
+  <li><b>Experiencia:</b> Ich habe selbst erlebt, dass ...</li>
+  <li><b>Tu país:</b> In Costa Rica / In meinem Heimatland ... Im Vergleich zu Deutschland ...</li>
+  <li><b>Pros y contras:</b> Ein Vorteil ist, dass ... Ein Nachteil ist ...</li>
+  <li><b>Opinión:</b> Meiner Meinung nach ... Vielen Dank für Ihre Aufmerksamkeit.</li></ol>
+  <div class="row" style="align-items:center"><span class="timer" id="t1">3:00</span><button class="btn sm" data-tm="t1" data-s="180">Prep. 3 min</button><button class="btn sec sm" data-tm="t1" data-s="180">Hablar 3 min</button><button class="btn sec sm" id="nt">Otro tema</button></div></div>
+  <div class="card"><span class="tag">Goethe Teil 1 / telc Teil 3 · planear juntos</span><h2 id="pt">${plan.t}</h2>
+  <div class="checks">${plan.p.map(p=>`<label><input type="checkbox"> ${p}</label>`).join('')}</div>
+  <p class="small">Trata los 4 puntos, propón, reacciona y llega a un acuerdo. Si practicas solo, haz los dos papeles en voz alta.</p>
+  <div class="row" style="align-items:center"><span class="timer" id="t2">3:00</span><button class="btn sm" data-tm="t2" data-s="180">Empezar</button><button class="btn sec sm" id="np">Otra tarea</button></div></div>
+  <div class="card"><h3 style="margin-top:0">Redemittel</h3><table>${REDE.map(([a,b])=>`<tr><td><b>${a}</b></td><td>${b}</td></tr>`).join('')}</table></div>
+  <div class="card"><span class="tag">Goethe Teil 3 · reaccionar</span><p style="margin:0">Vielen Dank für deine Präsentation. Besonders interessant fand ich ... · Ich habe eine Frage: Wie ist das in deinem Land? · Das ist eine gute Frage. Ich glaube, ...</p></div>
+  <div class="card"><span class="tag">telc Teil 1 · conocerse</span><p style="margin:0">Prepara 1 minuto sobre: Name, Herkunft, seit wann in Deutschland, Beruf, Familie, Sprachen, Hobbys, Pläne. Y pregunta: Und du? Wie lange lebst du schon hier? Was machst du beruflich?</p></div>
+  <div class="card"><h3 style="margin-top:0">Modelo: regalo de despedida</h3><div class="dlg">
+  <p><b>A:</b> Wir sollen ein Abschiedsgeschenk für Maria organisieren. Was könnten wir kaufen?</p><p><b>B:</b> Sie reist doch so gern. Wie wäre es mit einem Reisegutschein?</p><p><b>A:</b> Gute Idee, aber vielleicht zu teuer. Wie viel Geld sammeln wir?</p><p><b>B:</b> Ich schlage vor, dass jeder zehn Euro gibt. Wir sind zwölf, also 120 Euro.</p><p><b>A:</b> Einverstanden. Wer sammelt das Geld?</p><p><b>B:</b> Das mache ich. Und du kümmerst dich um die Karte, okay?</p><p><b>A:</b> Klar. Übergeben wir es am Freitag nach der Arbeit?</p><p><b>B:</b> Perfekt, so machen wir das.</p></div></div>`;
+  app().querySelectorAll('[data-tm]').forEach(b=>b.onclick=()=>{stopTimer();let left=+b.dataset.s;const el=$('#'+b.dataset.tm);el.style.color='';
+    timerInt=setInterval(()=>{left--;el.textContent=Math.floor(left/60)+':'+String(left%60).padStart(2,'0');if(left<=0){stopTimer();el.textContent='¡Tiempo!';el.style.color='var(--bad)'}},1000)});
+  $('#nt').onclick=()=>{$('#tp').textContent=PRES[Math.floor(Math.random()*PRES.length)]};
+  $('#np').onclick=()=>{stopTimer();sprechen()};
+}
+
+/* ----- Simulacro ----- */
+function sim(){
+  app().innerHTML=`<div class="card"><h2>Simulacro de Sprachbausteine</h2><p>20 huecos en 25 minutos, como en telc. Necesitas 12 para aprobar.</p>
+  <p class="small">Después haz una tarea de Schreiben y una presentación de Sprechen con sus cronómetros.</p>
+  <div class="row"><button class="btn" id="go">Empezar simulacro</button></div></div>`;
+  $('#go').onclick=simRun;
+}
+function simRun(){
+  let left=25*60;let n=0;
+  const a=SIM_A.text.replace(/\((\d+)\) ___/g,(_,d)=>{const q=SIM_A.qs[+d-1];return `<select data-a="${+d-1}"><option value="">(${d})</option>${q.slice(0,3).map((o,k)=>`<option value="${k}">${o}</option>`).join('')}</select>`});
+  const words=shuffle(SIM_B.words);
+  const b=SIM_B.text.replace(/\[(\d+)\]/g,(_,d)=>`<select data-b="${+d-11}"><option value="">(${d})</option>${words.map(w=>`<option>${w}</option>`).join('')}</select>`);
+  app().innerHTML=`<div class="card" style="position:sticky;top:52px;z-index:4;padding:10px 18px"><div class="meta" style="margin:0;align-items:center"><span class="timer" id="tm" style="font-size:26px">25:00</span><span>Parte A + B</span></div></div>
+  <div class="card"><span class="tag">Parte A · elige a, b o c</span><div class="text" style="line-height:2.1">${a}</div></div>
+  <div class="card"><span class="tag">Parte B · usa la lista (sobran 5)</span><p class="small">${SIM_B.words.join(' · ')}</p><div class="text" style="line-height:2.1">${b}</div></div>
+  <div class="row"><button class="btn" id="corr">Corregir</button></div><div id="res"></div>`;
+  timerInt=setInterval(()=>{left--;$('#tm').textContent=Math.floor(left/60)+':'+String(left%60).padStart(2,'0');if(left<=0){stopTimer();$('#tm').textContent='¡Tiempo!';$('#tm').style.color='var(--bad)'}},1000);
+  $('#corr').onclick=()=>{stopTimer();let sc=0;
+    app().querySelectorAll('select[data-a]').forEach(s=>{const q=SIM_A.qs[+s.dataset.a],ok=s.value!==''&&+s.value===q[3];if(ok)sc++;rec(ok);s.classList.add(ok?'ok':'bad');if(!ok)s.insertAdjacentHTML('afterend',` <b style="color:#1d5c39">${q[q[3]]}</b>`);s.disabled=true});
+    app().querySelectorAll('select[data-b]').forEach(s=>{const r=SIM_B.ans[+s.dataset.b],ok=s.value===r;if(ok)sc++;rec(ok);s.classList.add(ok?'ok':'bad');if(!ok)s.insertAdjacentHTML('afterend',` <b style="color:#1d5c39">${r}</b>`);s.disabled=true});
+    markDone('sim');
+    $('#res').innerHTML=`<div class="card" style="margin-top:14px"><p class="score">${sc}/20</p><p style="text-align:center;margin:0">${sc>=18?'Sehr gut':sc>=15?'Gut':sc>=12?'Aprobado':'Repasa la gramática y vuelve a intentarlo'}</p>
+    <p class="small">Claves: (2) aber = contraste · (4) etwas zum Essen · (7) letztes Jahr · (8) ob = si · (9) sich freuen auf · (14) indem = cómo · (16) sich anmelden · (17) wurde befördert = pasiva · (18) mögen + Akk = ihn · (20) lassen = mandar hacer.</p>
+    <div class="row"><button class="btn" id="again">Repetir</button><button class="btn sec" id="ws">Ir a Schreiben</button></div></div>`;
+    $('#again').onclick=simRun;$('#ws').onclick=()=>go('schreiben');$('#corr').remove();
+  };
+}
+
+try{speechSynthesis.getVoices()}catch(e){}
+go('inicio');
+</script>
+</body>
+</html>
