@@ -3,6 +3,7 @@
 Práctica interactiva para los exámenes **telc Deutsch B1** y **Goethe-Zertifikat B1**, con explicaciones en español.
 
 - **Gramática:** 80 preguntas en 12 temas, con explicación y repaso de fallos
+- **Fälle:** Nominativ, Akkusativ, Dativ und Genitiv: Theorie und 72 Übungen (auch Dativ oder Genitiv?)
 - **Lesen:** 5 textos tipo examen
 - **Hören:** 4 audios con la voz alemana del dispositivo
 - **Schreiben:** 11 tareas con cronómetro, contador de palabras y modelos

@@ -69,7 +69,7 @@ td,th{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertic
 th{font-size:12px;color:var(--muted);font-weight:600}
 .dlg p{margin:6px 0}
 .dlg b{color:var(--muted);font-weight:600}
-.hidden{display:none}
+.hidden{display:none!important}
 .small{font-size:13px;color:var(--muted)}
 .score{font-family:Fraunces,serif;font-size:52px;font-weight:800;margin:0;text-align:center}
 </style>
@@ -336,10 +336,10 @@ Herzliche Grüße`,qs:[["für","über","von",0],["denn","aber","sondern",1],["se
 const SIM_B={words:["ALS","BEVOR","DAMIT","DESHALB","GEWORDEN","IHN","INDEM","LASSEN","OBWOHL","SICH","TROTZ","WEDER","WURDE","ZU","ZWAR"],text:`Mein Nachbar Herr Ortiz ist vor zehn Jahren aus Kolumbien nach Deutschland gekommen. [11] er ankam, sprach er [12] Deutsch noch Englisch. [13] hat er sofort einen Kurs besucht. Er hat viel gelernt, [14] er jeden Abend Nachrichten gesehen hat. [15] er am Anfang keine Freunde hatte, war er nie allein: Er hat [16] in einem Fußballverein angemeldet. Heute arbeitet er als Elektriker. Letztes Jahr [17] er sogar zum Teamleiter befördert. Seine Kollegen mögen [18] sehr. Es macht ihm Spaß, anderen Neuankömmlingen [19] helfen. Nächstes Jahr möchte er sein Haus renovieren [20].`,ans:["ALS","WEDER","DESHALB","INDEM","OBWOHL","SICH","WURDE","IHN","ZU","LASSEN"]};
 
 /* ---------- views ---------- */
-const TABS=[["inicio","Inicio"],["gram","Gramática"],["lesen","Lesen"],["hoeren","Hören"],["schreiben","Schreiben"],["sprechen","Sprechen"],["sim","Simulacro"]];
+const TABS=[["inicio","Inicio"],["gram","Gramática"],["faelle","Fälle"],["lesen","Lesen"],["hoeren","Hören"],["schreiben","Schreiben"],["sprechen","Sprechen"],["sim","Simulacro"]];
 let tab="inicio",timerInt=null;
 function stopTimer(){if(timerInt){clearInterval(timerInt);timerInt=null}try{speechSynthesis.cancel()}catch(e){}}
-function go(t){stopTimer();tab=t;renderNav();({inicio,gram,lesen,hoeren,schreiben,sprechen,sim})[t]();window.scrollTo(0,0)}
+function go(t){stopTimer();tab=t;renderNav();({inicio,gram,faelle,lesen,hoeren,schreiben,sprechen,sim})[t]();window.scrollTo(0,0)}
 function renderNav(){$('#nav').innerHTML=TABS.map(([k,v])=>`<button class="${k===tab?'on':''}" data-t="${k}">${v}</button>`).join('');document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.t))}
 const app=()=>$('#app');
 
@@ -363,7 +363,7 @@ function inicio(){
   <tr><td>Sprechen</td><td>Conocerse · hablar de un tema · planear</td><td>15 min</td></tr></table>
   <p class="small">Fuentes: <a href="https://www.goethe.de/pro/relaunch/prf/materialien/B1/B1_Uebungssatz_Erwachsene.pdf">Goethe Übungssatz B1</a>, <a href="https://www.telc.net/fileadmin/user_upload/Downloads_Verlag/ERRATA_U2_4014-TPR-2501A_web.pdf">telc Testformat</a>, <a href="https://www.klett-sprachen.de/c-2557">Klett</a>. DTZ desde 1.11.2026: B1 en Sprechen, B1 en Hören/Lesen o Schreiben, mínimo A2 en la otra (<a href="https://migrando.de/?p=311362">migrando.de</a>).</p></div>
   <div class="card"><h2>Empieza aquí</h2><div class="list">
-  ${TABS.slice(1).map(([k,v])=>`<div class="item" data-t="${k}"><div><b>${v}</b><small>${{gram:G.length+' preguntas en 12 temas',lesen:L.length+' textos estilo examen',hoeren:H.length+' audios con voz alemana',schreiben:S.length+' tareas con cronómetro',sprechen:'Presentación, planear y Redemittel',sim:'6 simulacros de Sprachbausteine con tiempo real'}[k]}</small></div><span>→</span></div>`).join('')}</div></div>`;
+  ${TABS.slice(1).map(([k,v])=>`<div class="item" data-t="${k}"><div><b>${v}</b><small>${{gram:G.length+' preguntas en 12 temas',faelle:'Nominativ, Akkusativ, Dativ y Genitiv: '+FSETS.reduce((n,s)=>n+s.qs.length,0)+' ejercicios',lesen:L.length+' textos estilo examen',hoeren:H.length+' audios con voz alemana',schreiben:S.length+' tareas con cronómetro',sprechen:'Presentación, planear y Redemittel',sim:'6 simulacros de Sprachbausteine con tiempo real'}[k]}</small></div><span>→</span></div>`).join('')}</div></div>`;
   document.querySelectorAll('.item[data-t]').forEach(b=>b.onclick=()=>go(b.dataset.t));
 }
 
@@ -387,7 +387,7 @@ function runMC(deck,opts){
     $('#quit').onclick=opts.back;
   }
   function end(){
-    if(opts.id)markDone(opts.id);
+    if(opts.id)markDone(opts.id);if(opts.onEnd)opts.onEnd(score,deck.length);
     const p=Math.round(score/deck.length*100);
     app().innerHTML=`<div class="card"><p class="score">${score}/${deck.length}</p><p style="text-align:center;margin:0">${p}% · ${p>=60?'Aprobado':'Necesitas 60 %'}</p>
     <div class="row"><button class="btn" id="again">Otra vez</button>${wrong.length?'<button class="btn sec" id="retry">Repetir fallos</button>':''}<button class="btn sec" id="bk">Volver</button></div></div>
@@ -524,6 +524,103 @@ function sprechen(){
 }
 
 /* ----- Simulacro ----- */
+/* ---------- Fälle ---------- */
+const FN=["Nominativ","Akkusativ","Dativ","Genitiv"];
+const fall=(q,a,e)=>({q,o:FN,a,e,fix:true});
+const FSETS=[
+{id:"f1",t:"Welcher Fall ist das?",d:"Erkenne den Fall des unterstrichenen Wortes.",qs:[
+fall("<u>Der Lehrer</u> erklärt die Grammatik.",0,"Wer erklärt? Das Subjekt steht im Nominativ."),
+fall("Ich kaufe <u>einen Kuchen</u>.",1,"Was kaufe ich? Das direkte Objekt steht im Akkusativ."),
+fall("Ich helfe <u>meiner Mutter</u>.",2,"<b>helfen</b> verlangt immer den Dativ. Wem helfe ich?"),
+fall("Das ist das Auto <u>meines Bruders</u>.",3,"Das Wort hängt am Nomen <b>Auto</b>. Wessen Auto? Genitiv."),
+fall("Wir fahren mit <u>dem Bus</u>.",2,"<b>mit</b> + Dativ."),
+fall("Das Geschenk ist für <u>meinen Vater</u>.",1,"<b>für</b> + Akkusativ."),
+fall("Wegen <u>des Regens</u> bleiben wir zu Hause.",3,"<b>wegen</b> + Genitiv."),
+fall("Das Buch gefällt <u>dem Kind</u>.",2,"<b>gefallen</b> verlangt den Dativ. Wem gefällt es?"),
+fall("<u>Meine Schwester</u> wohnt in Köln.",0,"Wer wohnt in Köln? Subjekt = Nominativ."),
+fall("Er ist <u>ein guter Arzt</u>.",0,"Nach <b>sein</b> und <b>werden</b> steht der Nominativ (er = ein guter Arzt)."),
+fall("Ich lege das Handy auf <u>den Tisch</u>.",1,"Wechselpräposition mit Bewegung: Wohin? Akkusativ."),
+fall("Das Handy liegt auf <u>dem Tisch</u>.",2,"Wechselpräposition ohne Bewegung: Wo? Dativ."),
+fall("Ich gebe <u>dem Kellner</u> das Trinkgeld.",2,"Bei geben, schenken, zeigen: die Person steht im Dativ."),
+fall("Ich gebe dem Kellner <u>das Trinkgeld</u>.",1,"Bei geben, schenken, zeigen: die Sache steht im Akkusativ."),
+fall("Der Name <u>der Straße</u> ist sehr lang.",3,"Hängt am Nomen <b>Name</b>: Wessen Name? Genitiv."),
+fall("Trotz <u>der Kälte</u> gehen wir joggen.",3,"<b>trotz</b> + Genitiv."),
+fall("Ich frage <u>den Chef</u>.",1,"Falle! <b>fragen</b> verlangt den Akkusativ (auf Spanisch: preguntar <i>a</i> alguien)."),
+fall("Ich rufe <u>meine Oma</u> an.",1,"Falle! <b>anrufen</b> verlangt den Akkusativ: Ich rufe sie an.")]},
+{id:"f2",t:"Dativ oder Genitiv?",d:"Die häufigste Verwechslung. Achte darauf, was vor dem Wort steht.",qs:[
+{q:"Das Haus gehört <u>der Frau</u>.",o:["Dativ","Genitiv"],a:0,e:"<b>gehören</b> ist ein Verb mit Dativ. Frage: Wem gehört das Haus?",fix:true},
+{q:"Das ist das Haus <u>der Frau</u>.",o:["Dativ","Genitiv"],a:1,e:"Das Wort hängt am Nomen <b>Haus</b>. Frage: Wessen Haus ist das?",fix:true},
+{q:"Ich helfe <u>der Nachbarin</u>.",o:["Dativ","Genitiv"],a:0,e:"<b>helfen</b> + Dativ.",fix:true},
+{q:"Die Katze <u>der Nachbarin</u> ist weggelaufen.",o:["Dativ","Genitiv"],a:1,e:"Hängt am Nomen <b>Katze</b>: Wessen Katze?",fix:true},
+{q:"Ich gebe <u>der Lehrerin</u> mein Heft.",o:["Dativ","Genitiv"],a:0,e:"Bei <b>geben</b> steht die Person im Dativ.",fix:true},
+{q:"Das Heft <u>der Lehrerin</u> liegt auf dem Tisch.",o:["Dativ","Genitiv"],a:1,e:"Hängt am Nomen <b>Heft</b>: Wessen Heft?",fix:true},
+{q:"Wir sprechen mit <u>der Ärztin</u>.",o:["Dativ","Genitiv"],a:0,e:"<b>mit</b> + Dativ.",fix:true},
+{q:"Wegen <u>der Ärztin</u> musste ich lange warten.",o:["Dativ","Genitiv"],a:1,e:"<b>wegen</b> + Genitiv.",fix:true},
+{q:"Der Rock passt <u>der Verkäuferin</u> nicht.",o:["Dativ","Genitiv"],a:0,e:"<b>passen</b> + Dativ.",fix:true},
+{q:"Die Kinder <u>der Familie</u> spielen im Garten.",o:["Dativ","Genitiv"],a:1,e:"Hängt am Nomen <b>Kinder</b>: Wessen Kinder?",fix:true},
+{q:"Das Fahrrad gehört ___ Bruder.",o:["meinem","meines"],a:0,e:"Maskulin: Dativ = <b>meinem</b>, Genitiv = meines Bruders. Bei <b>der</b>-Wörtern ist das feminin gleich, maskulin nicht!",fix:true},
+{q:"Das ist das Fahrrad ___ Bruders.",o:["meinem","meines"],a:1,e:"Genitiv maskulin: <b>meines</b> Bruder<b>s</b> (mit -s am Nomen).",fix:true},
+{q:"Das Auto gehört ___ Mann.",o:["dem","des"],a:0,e:"gehören + Dativ: <b>dem</b> Mann.",fix:true},
+{q:"Das ist das Auto ___ Mannes.",o:["dem","des"],a:1,e:"Genitiv: <b>des</b> Mann<b>es</b>.",fix:true}]},
+{id:"f3",t:"Artikel einsetzen",d:"Wähle den richtigen Artikel.",qs:[
+{q:"Ich sehe ___ Mann.",o:["den","der","dem"],a:0,e:"sehen + Akkusativ, maskulin: <b>den</b>."},
+{q:"Ich danke ___ Lehrerin.",o:["die","der","den"],a:1,e:"danken + Dativ, feminin: <b>der</b>."},
+{q:"Das ist die Tasche ___ Frau.",o:["die","dem","der"],a:2,e:"Genitiv feminin: <b>der</b>."},
+{q:"Heute Abend gehen wir in ___ Kino.",o:["das","dem","den"],a:0,e:"Wohin? Akkusativ neutral: <b>das</b> (ins Kino)."},
+{q:"Er wohnt noch bei ___ Eltern.",o:["seine","seinen","seiner"],a:1,e:"bei + Dativ Plural: <b>seinen</b> (Dativ Plural endet auf -n)."},
+{q:"Ich brauche ___ neuen Computer.",o:["einen","ein","einem"],a:0,e:"brauchen + Akkusativ, maskulin: <b>einen</b>."},
+{q:"Sie schenkt ___ Freund ein Buch.",o:["ihren","ihrem","ihr"],a:1,e:"schenken: Person im Dativ, maskulin: <b>ihrem</b>."},
+{q:"Die Farbe ___ Autos gefällt mir.",o:["das","dem","des"],a:2,e:"Genitiv neutral: <b>des</b> Auto<b>s</b>."},
+{q:"Ohne ___ Brille sehe ich nichts.",o:["meine","meiner","meinem"],a:0,e:"ohne + Akkusativ, feminin: <b>meine</b>."},
+{q:"Seit ___ Woche bin ich krank.",o:["eine","einen","einer"],a:2,e:"seit + Dativ, feminin: <b>einer</b>."},
+{q:"Ich gratuliere ___ Kollegen zum Geburtstag.",o:["dem","den","der"],a:0,e:"gratulieren + Dativ: <b>dem</b> Kollegen (n-Deklination)."},
+{q:"Das ist das Zimmer ___ Kinder.",o:["den","der","die"],a:1,e:"Genitiv Plural: <b>der</b>."},
+{q:"Wir spielen mit ___ Kindern.",o:["die","der","den"],a:2,e:"mit + Dativ Plural: <b>den</b> Kinder<b>n</b>."},
+{q:"Er wartet auf ___ Zug.",o:["den","dem","der"],a:0,e:"warten auf + Akkusativ: <b>den</b>."},
+{q:"Nach ___ Unterricht gehe ich nach Hause.",o:["den","dem","des"],a:1,e:"nach + Dativ: <b>dem</b>."},
+{q:"Ich habe ___ Problem.",o:["einen","einem","ein"],a:2,e:"Akkusativ neutral: <b>ein</b> (gleich wie Nominativ)."},
+{q:"Während ___ Films hat er geschlafen.",o:["des","dem","den"],a:0,e:"während + Genitiv: <b>des</b> Film<b>s</b>."},
+{q:"Der Kuchen schmeckt ___ Gästen.",o:["die","den","der"],a:1,e:"schmecken + Dativ Plural: <b>den</b> Gäste<b>n</b>."}]},
+{id:"f4",t:"Pronomen",d:"ich, mich oder mir? Wähle das Pronomen in Klammern im richtigen Fall.",qs:[
+{q:"Kannst du ___ helfen? (ich)",o:["mich","mir","mein"],a:1,e:"helfen + Dativ: <b>mir</b>."},
+{q:"Ich liebe ___. (du)",o:["dich","dir","du"],a:0,e:"lieben + Akkusativ: <b>dich</b>."},
+{q:"Wie geht es ___? (Sie)",o:["Sie","Ihr","Ihnen"],a:2,e:"Es geht + Dativ: <b>Ihnen</b>."},
+{q:"Ich habe ___ gestern gesehen. (er)",o:["ihm","ihn","er"],a:1,e:"sehen + Akkusativ: <b>ihn</b>."},
+{q:"Das Buch gefällt ___. (wir)",o:["uns","wir","unser"],a:0,e:"gefallen + Dativ: <b>uns</b>."},
+{q:"Ich rufe ___ morgen an. (sie, Singular)",o:["ihr","sie","ihre"],a:1,e:"anrufen + Akkusativ: <b>sie</b>."},
+{q:"Gib ___ bitte das Salz! (ich)",o:["mich","meine","mir"],a:2,e:"geben: Person im Dativ: <b>mir</b>."},
+{q:"Wir besuchen ___ am Wochenende. (ihr)",o:["euch","ihr","euer"],a:0,e:"besuchen + Akkusativ: <b>euch</b>."},
+{q:"Der Lehrer erklärt ___ die Aufgabe. (sie, Plural)",o:["sie","ihnen","ihr"],a:1,e:"erklären: Person im Dativ: <b>ihnen</b>."},
+{q:"Ich warte auf ___. (du)",o:["dir","du","dich"],a:2,e:"warten auf + Akkusativ: <b>dich</b>."}]},
+{id:"f5",t:"Präpositionen",d:"Welchen Fall verlangt die Präposition?",qs:[
+["durch","Wir gehen durch ___ Park.",0],["aus","Sie kommt aus ___ Türkei.",1],["trotz","Trotz ___ Regens spielen wir.",2],["gegen","Er ist gegen ___ Plan.",0],["seit","Seit ___ Jahr lerne ich Deutsch.",1],["ohne","Ohne ___ Kaffee kann ich nicht arbeiten.",0],["während","Während ___ Pause esse ich.",2],["zu","Ich gehe zu ___ Arzt.",1],["um","Wir sitzen um ___ Tisch.",0],["bei","Ich wohne bei ___ Freund.",1],["statt","Statt ___ Busses nehme ich das Rad.",2],["von","Das Geschenk ist von ___ Oma.",1]
+].map(([p,s,a])=>({q:`Welchen Fall verlangt <b>${p}</b>? <span class="small" style="font-family:Inter">(${s})</span>`,o:["Akkusativ","Dativ","Genitiv"],a,e:["Akkusativ: durch, für, gegen, ohne, um, bis.","Dativ: aus, bei, mit, nach, seit, von, zu, gegenüber.","Genitiv: wegen, trotz, während, statt, innerhalb, außerhalb."][a],fix:true}))}
+];
+function faelle(){
+  const best=store.get('fbest',{});
+  app().innerHTML=`<div class="card"><h2>Die vier Fälle</h2>
+  <table><tr><th>Fall</th><th>Frage</th><th>m</th><th>f</th><th>n</th><th>Pl</th></tr>
+  <tr><td><b>Nominativ</b></td><td>Wer? Was?</td><td>der / ein</td><td>die / eine</td><td>das / ein</td><td>die</td></tr>
+  <tr><td><b>Akkusativ</b></td><td>Wen? Was?</td><td><b>den / einen</b></td><td>die / eine</td><td>das / ein</td><td>die</td></tr>
+  <tr><td><b>Dativ</b></td><td>Wem?</td><td>dem / einem</td><td>der / einer</td><td>dem / einem</td><td>den + <b>-n</b></td></tr>
+  <tr><td><b>Genitiv</b></td><td>Wessen?</td><td>des / eines + <b>-s</b></td><td>der / einer</td><td>des / eines + <b>-s</b></td><td>der</td></tr></table>
+  <h3>Wer bestimmt den Fall?</h3>
+  <table>
+  <tr><td><b>Nominativ</b></td><td>das Subjekt, und nach sein / werden</td></tr>
+  <tr><td><b>Akkusativ</b></td><td>das direkte Objekt (haben, sehen, kaufen, brauchen, fragen, anrufen) · durch, für, gegen, ohne, um · Wohin?</td></tr>
+  <tr><td><b>Dativ</b></td><td>helfen, danken, gehören, gefallen, passen, schmecken, gratulieren · die Person bei geben, schenken, zeigen · aus, bei, mit, nach, seit, von, zu · Wo?</td></tr>
+  <tr><td><b>Genitiv</b></td><td>hängt an einem Nomen (das Haus <i>der Frau</i>) · wegen, trotz, während, statt</td></tr></table>
+  <div class="exp ok" style="margin-top:12px"><b>Trick: Dativ oder Genitiv?</b><br>Schau, was <i>vor</i> dem Wort steht. Ein <b>Verb</b> (gehören, helfen) oder <b>mit/bei/zu</b>: Dativ. Ein <b>Nomen</b> (das Haus, der Name) oder <b>wegen/trotz</b>: Genitiv.<br><i>Das Haus gehört der Frau</i> (Wem?) · <i>Das ist das Haus der Frau</i> (Wessen?)</div></div>
+  <div class="card"><h2>Übungen</h2><div class="list">
+  ${FSETS.map(s=>`<div class="item" data-id="${s.id}"><div><b>${s.t}</b><small>${s.d}</small></div>${best[s.id]!=null?`<span class="pill ${best[s.id]>=60?'ok':''}">${best[s.id]}%</span>`:`<span class="pill">${s.qs.length}</span>`}</div>`).join('')}
+  <div class="item" data-id="mix"><div><b>Alles gemischt</b><small>20 zufällige Aufgaben aus allen Übungen</small></div><span class="pill">20</span></div></div></div>`;
+  app().querySelectorAll('.item').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.id,pool=id==='mix'?FSETS.flatMap(s=>s.qs):FSETS.find(s=>s.id===id).qs;
+    let deck=shuffle(pool).slice(0,id==='mix'?20:999).map(x=>{if(x.fix)return{...x};const idx=shuffle(x.o.map((_,k)=>k));return{...x,o:idx.map(k=>x.o[k]),a:idx.indexOf(x.a)}});
+    runMC(deck,{id:'fall_'+id,back:faelle,onEnd(sc,n){const bb=store.get('fbest',{}),p=Math.round(sc/n*100);if(bb[id]==null||p>bb[id]){bb[id]=p;store.set('fbest',bb)}}});
+  });
+}
+
 const SIMS=[
 {t:"Invitación al Sommerfest",a:SIM_A,b:SIM_B,ex:["vielen Dank für + Akk","contraste: komme gern, aber ...","bis 15 Uhr = hasta","etwas zum Essen","wenn = si condicional","die Schwester, sujeto femenino","letztes Jahr (das Jahr, Akk)","ob = si (pregunta indirecta)","sich freuen auf = algo futuro","condición real: ist","als = una vez en el pasado","weder ... noch","deshalb + inversión","indem = de qué manera","obwohl + verbo al final","sich anmelden","pasiva Präteritum: wurde befördert","mögen + Akk: ihn","Spaß machen + zu + Infinitiv","lassen = mandar hacer"]},
 {t:"Carta al casero: la calefacción",a:{text:`Sehr geehrter Herr Schulz,
