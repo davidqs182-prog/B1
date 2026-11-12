@@ -598,7 +598,8 @@ fall("Ich rufe <u>meine Oma</u> an.",1,"Falle! <b>anrufen</b> verlangt den Akkus
 ];
 function faelle(){
   const best=store.get('fbest',{});
-  app().innerHTML=`<div class="card"><h2>Die vier Fälle</h2>
+  app().innerHTML=`<div class="card"><div class="item" id="gobasics" style="border-color:var(--ink);background:var(--soft)"><div><b>Basics</b><small>Empieza aquí: los 4 casos paso a paso, con explicaciones en español</small></div><span class="pill">${BSETS.reduce((n,x)=>n+x.qs.length,0)} ejercicios</span></div></div>
+  <div class="card"><h2>Die vier Fälle</h2>
   <table><tr><th>Fall</th><th>Frage</th><th>m</th><th>f</th><th>n</th><th>Pl</th></tr>
   <tr><td><b>Nominativ</b></td><td>Wer? Was?</td><td>der / ein</td><td>die / eine</td><td>das / ein</td><td>die</td></tr>
   <tr><td><b>Akkusativ</b></td><td>Wen? Was?</td><td><b>den / einen</b></td><td>die / eine</td><td>das / ein</td><td>die</td></tr>
@@ -614,10 +615,94 @@ function faelle(){
   <div class="card"><h2>Übungen</h2><div class="list">
   ${FSETS.map(s=>`<div class="item" data-id="${s.id}"><div><b>${s.t}</b><small>${s.d}</small></div>${best[s.id]!=null?`<span class="pill ${best[s.id]>=60?'ok':''}">${best[s.id]}%</span>`:`<span class="pill">${s.qs.length}</span>`}</div>`).join('')}
   <div class="item" data-id="mix"><div><b>Alles gemischt</b><small>20 zufällige Aufgaben aus allen Übungen</small></div><span class="pill">20</span></div></div></div>`;
-  app().querySelectorAll('.item').forEach(b=>b.onclick=()=>{
+  $('#gobasics').onclick=basics;
+  app().querySelectorAll('.item[data-id]').forEach(b=>b.onclick=()=>{
     const id=b.dataset.id,pool=id==='mix'?FSETS.flatMap(s=>s.qs):FSETS.find(s=>s.id===id).qs;
     let deck=shuffle(pool).slice(0,id==='mix'?20:999).map(x=>{if(x.fix)return{...x};const idx=shuffle(x.o.map((_,k)=>k));return{...x,o:idx.map(k=>x.o[k]),a:idx.indexOf(x.a)}});
     runMC(deck,{id:'fall_'+id,back:faelle,onEnd(sc,n){const bb=store.get('fbest',{}),p=Math.round(sc/n*100);if(bb[id]==null||p>bb[id]){bb[id]=p;store.set('fbest',bb)}}});
+  });
+}
+
+/* ---------- Basics (Fälle paso a paso) ---------- */
+const NA=["Nominativ","Akkusativ"];
+const BSETS=[
+{id:"b1",t:"Paso 1 y 2: Nominativ y Akkusativ",d:"Sujeto (¿quién?) y objeto (¿qué? / ¿a quién?). Solo cambia el masculino: der → den.",
+ rule:"<b>Nominativ</b> = el sujeto, quien hace la acción: der Mann, die Frau, das Kind.<br><b>Akkusativ</b> = lo que recibe la acción. Solo cambia el masculino: <b>der → den</b>, <b>ein → einen</b>.",qs:[
+{q:"___ Mann schläft.",o:["Der","Den","Dem"],a:0,e:"¿Quién duerme? El hombre es el sujeto → Nominativ: <b>der</b>."},
+{q:"Ich sehe ___ Mann.",o:["der","den","dem"],a:1,e:"¿Qué veo? El hombre recibe la acción → Akkusativ masculino: <b>den</b>."},
+{q:"Ich sehe ___ Frau.",o:["die","den","der"],a:0,e:"Akkusativ femenino no cambia: <b>die</b>."},
+{q:"Ich sehe ___ Kind.",o:["den","das","dem"],a:1,e:"Akkusativ neutro no cambia: <b>das</b>."},
+{q:"___ Hund bellt.",o:["Den","Dem","Der"],a:2,e:"¿Quién ladra? Sujeto → Nominativ: <b>der</b>."},
+{q:"Ich kaufe ___ Tisch.",o:["den","der","des"],a:0,e:"¿Qué compro? Akkusativ masculino: <b>den</b> Tisch."},
+{q:"___ Kaffee ist heiß.",o:["Den","Der","Dem"],a:1,e:"¿Qué está caliente? Sujeto → Nominativ: <b>der</b>."},
+{q:"Er trinkt ___ Kaffee.",o:["der","des","den"],a:2,e:"¿Qué bebe? Akkusativ masculino: <b>den</b>."},
+{q:"Sie hat ___ Bruder.",o:["einen","ein","einem"],a:0,e:"Akkusativ masculino: ein → <b>einen</b>."},
+{q:"Wir brauchen ___ Auto.",o:["einen","ein","einem"],a:1,e:"das Auto es neutro, no cambia: <b>ein</b>."},
+{q:"___ Lehrerin ist sehr nett.",o:["Den","Der","Die"],a:2,e:"Sujeto femenino → Nominativ: <b>die</b>."},
+{q:"Ich suche ___ Schlüssel.",o:["den","der","dem"],a:0,e:"¿Qué busco? Akkusativ masculino: <b>den</b> Schlüssel."},
+{q:"Ich sehe <u>den Mann</u>. ¿Qué caso es?",o:NA,a:1,e:"<b>den</b> solo existe en Akkusativ (masculino). El hombre recibe la acción.",fix:true},
+{q:"<u>Der Mann</u> sieht mich. ¿Qué caso es?",o:NA,a:0,e:"Ahora el hombre es quien ve, el sujeto → Nominativ.",fix:true},
+{q:"Ich liebe <u>die Musik</u>. ¿Qué caso es?",o:NA,a:1,e:"¿Qué amo? La música recibe la acción → Akkusativ (femenino: die no cambia).",fix:true}]},
+{id:"b2",t:"Paso 3: Dativ",d:"La persona que recibe algo. der → dem, die → der, das → dem, plural den + -n.",
+ rule:"<b>Dativ</b> = a quién le das algo o a quién le pasa algo.<br><b>der → dem · die → der · das → dem · Plural: den + -n</b><br>Verbos con Dativ: helfen, danken, gehören, gefallen. Palabras con Dativ: mit, bei, zu, von, aus, nach, seit.",qs:[
+{q:"Ich gebe ___ Mann das Buch.",o:["den","dem","der"],a:1,e:"El hombre recibe el libro → Dativ masculino: <b>dem</b>."},
+{q:"Ich gebe ___ Frau das Buch.",o:["der","die","dem"],a:0,e:"Dativ femenino: die → <b>der</b>."},
+{q:"Ich gebe ___ Kind das Buch.",o:["das","den","dem"],a:2,e:"Dativ neutro: das → <b>dem</b>."},
+{q:"Ich spiele mit ___ Kindern.",o:["den","die","der"],a:0,e:"mit + Dativ plural: <b>den</b> Kinder<b>n</b>."},
+{q:"Ich helfe ___ Lehrer.",o:["den","der","dem"],a:2,e:"helfen pide siempre Dativ: <b>dem</b> Lehrer."},
+{q:"Das Auto gehört ___ Frau.",o:["die","der","des"],a:1,e:"gehören pide Dativ, femenino: <b>der</b> Frau."},
+{q:"Wir fahren mit ___ Bus.",o:["dem","den","der"],a:0,e:"mit + Dativ, masculino: <b>dem</b> Bus."},
+{q:"Ich danke ___ Arzt.",o:["den","des","dem"],a:2,e:"danken pide Dativ: <b>dem</b> Arzt."},
+{q:"Der Film gefällt ___ Kind.",o:["dem","das","den"],a:0,e:"gefallen pide Dativ, neutro: <b>dem</b> Kind."},
+{q:"Ich komme aus ___ Schule.",o:["die","der","dem"],a:1,e:"aus + Dativ, femenino: <b>der</b> Schule."},
+{q:"Er wohnt bei ___ Eltern.",o:["meine","meiner","meinen"],a:2,e:"bei + Dativ plural: <b>meinen</b> Eltern."},
+{q:"Ich spreche mit den ___.",o:["Freunden","Freunde","Freundes"],a:0,e:"Dativ plural: el sustantivo lleva <b>-n</b>: Freunde<b>n</b>."},
+{q:"Ich gebe <u>dem Mann</u> das Buch. ¿Qué caso es dem Mann?",o:["Akkusativ","Dativ"],a:1,e:"El hombre recibe el libro → Dativ. El libro (das Buch) es la cosa → Akkusativ.",fix:true},
+{q:"Ich gebe dem Mann <u>das Buch</u>. ¿Qué caso es das Buch?",o:["Akkusativ","Dativ"],a:0,e:"El libro es la cosa que doy → Akkusativ.",fix:true}]},
+{id:"b3",t:"Paso 4: Genitiv",d:"¿De quién? der → des + -s, die → der, das → des + -s, plural der.",
+ rule:"<b>Genitiv</b> = de quién es algo (el \"de\" del español).<br><b>der → des + -s · die → der · das → des + -s · Plural: der</b><br>Va pegado a otro sustantivo, o después de wegen y trotz. Hablando, se usa mucho von + Dativ.",qs:[
+{q:"das Auto ___ Mannes",o:["dem","des","der"],a:1,e:"Genitiv masculino: <b>des</b> Mann<b>es</b>."},
+{q:"die Tasche ___ Frau",o:["der","die","des"],a:0,e:"Genitiv femenino: die → <b>der</b>, sin -s."},
+{q:"das Spielzeug ___ Kindes",o:["das","dem","des"],a:2,e:"Genitiv neutro: <b>des</b> Kind<b>es</b>."},
+{q:"Das ist das Haus ___ Eltern.",o:["der","die","den"],a:0,e:"Genitiv plural: <b>der</b> Eltern."},
+{q:"der Name ___ Lehrers",o:["dem","den","des"],a:2,e:"Genitiv masculino: <b>des</b> Lehrer<b>s</b>."},
+{q:"Das ist das Fahrrad des ___.",o:["Bruder","Bruders","Brudern"],a:1,e:"Masculino en Genitiv: el sustantivo lleva <b>-s</b>: Bruder<b>s</b>."},
+{q:"Wessen Buch ist das? Das ist das Buch ___ Schülerin.",o:["die","des","der"],a:2,e:"Genitiv femenino: <b>der</b> Schülerin."},
+{q:"Wegen ___ Regens bleiben wir zu Hause.",o:["des","dem","den"],a:0,e:"wegen pide Genitiv: <b>des</b> Regens."},
+{q:"Trotz ___ Kälte gehen wir raus.",o:["die","der","dem"],a:1,e:"trotz pide Genitiv, femenino: <b>der</b> Kälte."},
+{q:"Hablando: Das ist das Auto von ___ Mann.",o:["des","den","dem"],a:2,e:"von pide Dativ: von <b>dem</b> Mann (= vom Mann). Es la forma hablada de \"des Mannes\"."}]}
+];
+BSETS.push({id:"b4",t:"Repaso: los 4 casos",d:"Reconoce el caso de la palabra subrayada.",rule:"Pregúntate: ¿quién? (Nominativ) · ¿qué? (Akkusativ) · ¿a quién le doy algo? (Dativ) · ¿de quién? (Genitiv).",qs:[
+fall("<u>Die Frau</u> kauft Brot.",0,"¿Quién compra? Sujeto → Nominativ."),
+fall("Die Frau kauft <u>das Brot</u>.",1,"¿Qué compra? → Akkusativ."),
+fall("Ich gebe <u>der Frau</u> das Brot.",2,"La mujer recibe algo → Dativ."),
+fall("Das ist das Brot <u>der Frau</u>.",3,"¿De quién es el pan? → Genitiv."),
+fall("Ich besuche <u>meinen Freund</u>.",1,"¿A quién visito? Akkusativ (meinen = masculino con -en)."),
+fall("Ich helfe <u>meinem Freund</u>.",2,"helfen pide Dativ (meinem)."),
+fall("Das ist das Handy <u>meines Freundes</u>.",3,"¿De quién es el móvil? → Genitiv (meines Freundes)."),
+fall("<u>Mein Freund</u> kommt aus Spanien.",0,"¿Quién viene? Sujeto → Nominativ."),
+fall("Wir fahren mit <u>dem Zug</u>.",2,"mit pide Dativ."),
+fall("Wegen <u>des Streiks</u> fährt kein Zug.",3,"wegen pide Genitiv."),
+fall("Ich habe <u>einen Termin</u>.",1,"¿Qué tengo? → Akkusativ (ein → einen)."),
+fall("Das Buch gehört <u>dem Kind</u>.",2,"gehören pide Dativ.")]});
+let bsel=null;
+function basics(){
+  const best=store.get('fbest',{});
+  app().innerHTML=`<div class="card"><span class="tag">Fälle · Basics</span><h2>Los 4 casos paso a paso</h2>
+  <p class="small" style="margin-top:0">No son tiempos, son <b>casos</b>: indican qué papel tiene la palabra en la frase. Lo que cambia es sobre todo el artículo.</p>
+  <table><tr><th>Caso</th><th>Pregunta</th><th>der</th><th>die</th><th>das</th><th>Plural</th></tr>
+  <tr><td><b>Nominativ</b></td><td>¿quién?</td><td>der</td><td>die</td><td>das</td><td>die</td></tr>
+  <tr><td><b>Akkusativ</b></td><td>¿qué?</td><td><b>den</b></td><td>die</td><td>das</td><td>die</td></tr>
+  <tr><td><b>Dativ</b></td><td>¿a quién?</td><td><b>dem</b></td><td><b>der</b></td><td><b>dem</b></td><td><b>den</b> + -n</td></tr>
+  <tr><td><b>Genitiv</b></td><td>¿de quién?</td><td><b>des</b> + -s</td><td><b>der</b></td><td><b>des</b> + -s</td><td><b>der</b></td></tr></table>
+  <p class="small">Haz los pasos en orden. Cuando saques 80 % o más, pasa al siguiente.</p></div>
+  <div class="card"><div class="list">${BSETS.map(s=>`<div class="item" data-id="${s.id}"><div><b>${s.t}</b><small>${s.d}</small></div>${best[s.id]!=null?`<span class="pill ${best[s.id]>=80?'ok':''}">${best[s.id]}%</span>`:`<span class="pill">${s.qs.length}</span>`}</div>`).join('')}</div>
+  <div class="row"><button class="btn sec" id="bk">Volver a Fälle</button></div></div>`;
+  $('#bk').onclick=faelle;
+  app().querySelectorAll('.item').forEach(b=>b.onclick=()=>{
+    const s=BSETS.find(z=>z.id===b.dataset.id);
+    const deck=shuffle(s.qs).map(x=>{if(x.fix)return{...x};const idx=shuffle(x.o.map((_,k)=>k));return{...x,o:idx.map(k=>x.o[k]),a:idx.indexOf(x.a)}});
+    runMC(deck,{id:'basic_'+s.id,back:basics,header:`<div class="exp ok" style="margin:0 0 12px">${s.rule}</div>`,onEnd(sc,n){const bb=store.get('fbest',{}),p=Math.round(sc/n*100);if(bb[s.id]==null||p>bb[s.id]){bb[s.id]=p;store.set('fbest',bb)}}});
   });
 }
 
